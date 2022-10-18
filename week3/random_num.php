@@ -13,16 +13,6 @@
             color: blue;
             font-style: italic;
         }
-
-        .num3 {
-            color: red;
-            font-weight: bold;
-        }
-
-        .num4 {
-            font-style: italic;
-            font-weight: bold;
-        }
     </style>
 </head>
 
@@ -37,14 +27,6 @@
 
     echo "<span class=\"num2\">";
     echo $y . "<br>";
-    echo "</span>";
-
-    echo "<span class=\"num3\">";
-    echo ($x + $y . "<br>");
-    echo "</span>";
-
-    echo "<span class=\"num4\">";
-    echo ($x * $y . "<br>");
     echo "</span>";
     ?>
 </body>
