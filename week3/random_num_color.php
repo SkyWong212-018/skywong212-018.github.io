@@ -19,7 +19,7 @@
     if ($x > $y) {
         echo "<div class=\"container text-center\">";
         echo "<div class=\"row justify-content-center\">";
-        echo "<div class=\"col-4 text-primary\">";
+        echo "<div class=\"col-4 bg-primary\">";
         echo "<span class=\"num1\">";
         echo "<strong class=\"fs-1\">";
         echo $x . "<br>";
@@ -27,7 +27,7 @@
         echo "</span>";
         echo "</div> ";
 
-        echo "<div class=\"col-4 text-secondary\">";
+        echo "<div class=\"col-4 bg-secondary\">";
         echo "<span class=\"num2\">";
         echo $y . "<br>";
         echo "</span>";
@@ -37,13 +37,13 @@
     } else {
         echo "<div class=\"container text-center\">";
         echo "<div class=\"row justify-content-center\">";
-        echo "<div class=\"col-4 text-primary\">";
+        echo "<div class=\"col-4 bg-primary\">";
         echo "<span class=\"num1\">";
         echo $x . "<br>";
         echo "</span>";
         echo "</div> ";
 
-        echo "<div class=\"col-4 text-secondary\">";
+        echo "<div class=\"col-4 bg-secondary\">";
         echo "<span class=\"num2\">";
         echo "<strong class=\"fs-1\">";
         echo $y . "<br>";
