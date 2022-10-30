@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="row p-5">
+    <div class="row p-4 col-md-2">
         <?php
         $month = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 
@@ -17,6 +17,7 @@
         echo "IC: $userinfo <br>";
 
         //print out gender
+        //-1 = only print out last number
         $g = substr($userinfo, -1);
         if ($g % 2 == 0) {
             echo "Mrs. <br>";
@@ -25,6 +26,7 @@
         }
 
         //print out month
+        //2, 2 = delete first 2 number & print out 2 number after deleted 2 number
         $m = substr($userinfo, 2, 2);
         if ($m == "01") {
             echo $month[0];
@@ -74,64 +76,64 @@
         //print out zodiac
         if ($m == "12") {
             if ($d < 22)
-                echo "Sagittarius . <img src=\"sagittarius.png\" class=\"img-thumbnail\" alt=\"sagittarius\">";
+                echo "Sagittarius <img src=\"img/sagittarius.png\" alt=\"sagittarius\">";
             else
-                echo "Capricorn <img src=\"capricorn.png\" class=\"img-thumbnail\" alt=\"capricorn\">";
+                echo "Capricorn <img src=\"img/capricorn.png\" alt=\"capricorn\">";
         } else if ($m == "01") {
             if ($d < 20)
-                echo "Capricorn <img src=\"capricorn.png\" class=\"img-thumbnail\" alt=\"capricorn\">";
+                echo "Capricorn <img src=\"img/capricorn.png\" alt=\"capricorn\">";
             else
-                echo "Aquarius <img src=\"aquarius.png\" class=\"img-thumbnail\" alt=\"aquarius\">";
+                echo "Aquarius <img src=\"img/aquarius.png\" alt=\"aquarius\">";
         } else if ($m == "02") {
             if ($d < 19)
-                echo "Aquarius <img src=\"aquarius.png\" class=\"img-thumbnail\" alt=\"aquarius\">";
+                echo "Aquarius <img src=\"img/aquarius.png\" alt=\"aquarius\">";
             else
-                echo "Pisces <img src=\"pisces.png\" class=\"img-thumbnail\" alt=\"pisces\">";
+                echo "Pisces <img src=\"img/pisces.png\" alt=\"pisces\">";
         } else if ($m == "03") {
             if ($d < 21)
-                echo "Pisces <img src=\"pisces.png\" class=\"img-thumbnail\" alt=\"pisces\">";
+                echo "Pisces <img src=\"img/pisces.png\" alt=\"pisces\">";
             else
-                echo "Aries <img src=\"aries.png\" class=\"img-thumbnail\" alt=\"aries\">";
+                echo "Aries <img src=\"img/aries.png\" alt=\"aries\">";
         } else if ($m == "04") {
             if ($d < 20)
-                echo "Aries <img src=\"aries.png\" class=\"img-thumbnail\" alt=\"aries\">";
+                echo "Aries <img src=\"img/aries.png\" alt=\"aries\">";
             else
-                echo "Taurus <img src=\"taurus.png\" class=\"img-thumbnail\" alt=\"taurus\">";
+                echo "Taurus <img src=\"img/taurus.png\" alt=\"taurus\">";
         } else if ($m == "05") {
             if ($d < 21)
-                echo "Taurus <img src=\"taurus.png\" class=\"img-thumbnail\" alt=\"taurus\">";
+                echo "Taurus <img src=\"img/taurus.png\" alt=\"taurus\">";
             else
-                echo "Gemini <img src=\"gemini.png\" class=\"img-thumbnail\" alt=\"gemini\">";
+                echo "Gemini <img src=\"img/gemini.png\" alt=\"gemini\">";
         } else if ($m == "06") {
             if ($d < 21)
-                echo "Gemini <img src=\"gemini.png\" class=\"img-thumbnail\" alt=\"gemini\">";
+                echo "Gemini <img src=\"img/gemini.png\" alt=\"gemini\">";
             else
-                echo "Cancer <img src=\"cancer.png\" class=\"img-thumbnail\" alt=\"cancer\">";
+                echo "Cancer <img src=\"img/cancer.png\" alt=\"cancer\">";
         } else if ($m == "07") {
             if ($d < 23)
-                echo "Cancer <img src=\"cancer.png\" class=\"img-thumbnail\" alt=\"cancer\">";
+                echo "Cancer <img src=\"img/cancer.png\" alt=\"cancer\">";
             else
-                echo "Leo <img src=\"leo.png\" class=\"img-thumbnail\" alt=\"leo\">";
+                echo "Leo <img src=\"img/leo.png\" alt=\"leo\">";
         } else if ($m == "08") {
             if ($d < 23)
-                echo "Leo <img src=\"leo.png\" class=\"img-thumbnail\" alt=\"leo\">";
+                echo "Leo <img src=\"img/leo.png\" alt=\"leo\">";
             else
-                echo "Virgo <img src=\"virgo.png\" class=\"img-thumbnail\" alt=\"virgo\">";
+                echo "Virgo <img src=\"img/virgo.png\" alt=\"virgo\">";
         } else if ($m == "09") {
             if ($d < 23)
-                echo "Virgo <img src=\"virgo.png\" class=\"img-thumbnail\" alt=\"virgo\">";
+                echo "Virgo <img src=\"img/virgo.png\" alt=\"virgo\">";
             else
-                echo "Libra <img src=\"libra.png\" class=\"img-thumbnail\" alt=\"libra\">";
+                echo "Libra <img src=\"img/libra.png\" alt=\"libra\">";
         } else if ($m == "10") {
             if ($d < 23)
-                echo "Libra <img src=\"libra.png\" class=\"img-thumbnail\" alt=\"libra\">";
+                echo "Libra <img src=\"img/libra.png\" alt=\"libra\">";
             else
-                echo "Scorpio <img src=\"scorpio.png\" class=\"img-thumbnail\" alt=\"scorpio\">";
+                echo "Scorpio <img src=\"img/scorpio.png\" alt=\"scorpio\">";
         } else if ($m == "11") {
             if ($d < 22)
-                echo "Scorpio <img src=\"scorpio.png\" class=\"img-thumbnail\" alt=\"scorpio\">";
+                echo "Scorpio <img src=\"img/scorpio.png\" alt=\"scorpio\">";
             else
-                echo "Sagittarius <img src=\"sagittarius.png\" alt=\"sagittarius\" width=\"250px\">";
+                echo "Sagittarius <img src=\"img/sagittarius.png\" alt=\"sagittarius\">";
         }
         ?>
 
