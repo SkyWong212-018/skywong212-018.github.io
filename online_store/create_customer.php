@@ -64,6 +64,13 @@
                     $username = $_POST["username"];
                 }
 
+                if (strlen($username) < 6) {
+                    echo "<div class='alert alert-danger'>Username must be more than 6 characters.</div><br>";
+                    $flag = true;
+                } else {
+                    $username = $_POST["username"];
+                }
+
                 if (empty($password)) {
                     echo "<div class='alert alert-danger'>Password is empty.</div><br>";
                     $flag = true;
