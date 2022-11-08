@@ -8,6 +8,30 @@
 </head>
 
 <body>
+    <!-- navigation bar -->
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost/webdev/online_store/home.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="http://localhost/webdev/online_store/product_create.php">Create Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost/webdev/online_store/create_customer.php">Create Customer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost/webdev/online_store/contact_us.php">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <!-- container -->
     <div class="container">
         <div class="page-header">
@@ -48,24 +72,51 @@
                 } else {
                     echo "<div class='alert alert-danger'>Unable to save record.</div>";
                 }
-
-                if (empty($name)) {
-                    echo "<div class='alert alert-danger'>Name is empty.</div><br>";
-                } else if (empty($description)) {
-                    echo "<div class='alert alert-danger'>Description is empty.</div><br>";
-                } else if (empty($price)) {
-                    echo "<div class='alert alert-danger'>Price is empty.</div><br>";
-                } else if (empty($promotion_price)) {
-                    echo "<div class='alert alert-danger'>Promotion price is empty.</div><br>";
-                } else if (empty($manufacture_date)) {
-                    echo "<div class='alert alert-danger'>Manufacture date is empty.</div><br>";
-                } else if (empty($expired_date)) {
-                    echo "<div class='alert alert-danger'>Expired date is empty.</div><br>";
-                }
             }
             // show error
             catch (PDOException $exception) {
                 die('ERROR: ' . $exception->getMessage());
+            }
+
+            if (empty($name)) {
+                echo "<div class='alert alert-danger'>Name is empty.</div><br>";
+            } else {
+                $name = $_POST["name"];
+            }
+
+            if (empty($description)) {
+                echo "<div class='alert alert-danger'>Description is empty.</div><br>";
+            } else {
+                $description = $_POST["description"];
+            }
+
+            if (empty($price)) {
+                echo "<div class='alert alert-danger'>Price is empty.</div><br>";
+            } else {
+                $price = $_POST["price"];
+            }
+
+            if (empty($promotion_price)) {
+                echo "<div class='alert alert-danger'>Promotion price is empty.</div><br>";
+            } else {
+                $promotion_price = $_POST["promotion_price"];
+            }
+            if (($_POST["promotion_price"]) > ($_POST["price"])) {
+                echo "<div class='alert alert-danger'>Promotion price need to cheaper than original price.</div><br>";
+            }
+            if (empty($manufacture_date)) {
+                echo "<div class='alert alert-danger'>Manufacture date is empty.</div><br>";
+            } else {
+                $manufacture_date = $_POST["manufacture_date"];
+            }
+
+            if (empty($expired_date)) {
+                echo "<div class='alert alert-danger'>Expired date is empty.</div><br>";
+            } else {
+                $expired_date = $_POST["expired_date"];
+            }
+            if (($_POST["expired_date"]) < ($_POST["manufacture_date"])) {
+                echo "<div class='alert alert-danger'>Expired date need to later than manufacture date.</div><br>";
             }
         }
         ?>
@@ -81,7 +132,7 @@
                 </tr>
                 <tr>
                     <td>Description</td>
-                    <td><textarea name='description' class='form-control'></textarea></td>
+                    <td><textarea name='description' class='form-control' rows="4" cols="50"></textarea></td>
                 </tr>
                 <tr>
                     <td>Price</td>
