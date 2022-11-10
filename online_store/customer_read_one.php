@@ -40,12 +40,14 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // values to fill up our form
-            $username = $row['username'];
-            $password = $row['password'];
-            $first_name = $row['first_name'];
-            $last_name = $row['last_name'];
-            $gender = $row['gender'];
-            $date_of_birth = $row['date_of_birth'];
+            if ($row) {
+                $username = $row['username'];
+                $password = $row['password'];
+                $first_name = $row['first_name'];
+                $last_name = $row['last_name'];
+                $gender = $row['gender'];
+                $date_of_birth = $row['date_of_birth'];
+            }
         }
 
         // show error
