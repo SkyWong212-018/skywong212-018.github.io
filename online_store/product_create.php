@@ -23,7 +23,13 @@
                         <a class="nav-link active" aria-current="page" href="http://localhost/webdev/online_store/product_create.php">Create Product</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="http://localhost/webdev/online_store/product_read.php">Read Product</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="http://localhost/webdev/online_store/create_customer.php">Create Customer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost/webdev/online_store/read_customer.php">Read Customer</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="http://localhost/webdev/online_store/contact_us.php">Contact Us</a>
@@ -173,7 +179,7 @@
                     <td></td>
                     <td>
                         <input type='submit' value='Save' class='btn btn-primary' />
-                        <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                        <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
                     </td>
                 </tr>
             </table>
