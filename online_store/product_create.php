@@ -9,35 +9,10 @@
 
 <body>
     <!-- navigation bar -->
-    <nav class="navbar navbar-expand-lg bg-light">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost/webdev/online_store/home.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="http://localhost/webdev/online_store/product_create.php">Create Product</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost/webdev/online_store/product_read.php">Read Product</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost/webdev/online_store/create_customer.php">Create Customer</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost/webdev/online_store/read_customer.php">Read Customer</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://localhost/webdev/online_store/contact_us.php">Contact Us</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php
+    include 'menu.php';
+    ?>
+
     <!-- container -->
     <div class="container">
         <div class="page-header">
@@ -153,27 +128,50 @@
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Name</td>
-                    <td><input type='text' name='name' class='form-control' /></td>
+                    <td><input type='text' name='name' class='form-control' value='<?php
+                                                                                    if (isset($_POST["name"])) {
+                                                                                        echo $_POST["name"];
+                                                                                    }
+                                                                                    ?>' /></td>
                 </tr>
                 <tr>
                     <td>Description</td>
-                    <td><textarea name='description' class='form-control' rows="4" cols="50"></textarea></td>
+                    <td><textarea name='description' class='form-control' rows="4" cols="50"><?php
+                                                                                                if (isset($_POST["description"])) {
+                                                                                                    echo $_POST["description"];
+                                                                                                }
+                                                                                                ?></textarea> </td>
+                    </td>
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td><input type='text' name='price' class='form-control' /></td>
+                    <td><input type='text' name='price' class='form-control' value='<?php
+                                                                                    if (isset($_POST["price"])) {
+                                                                                        echo $_POST["price"];
+                                                                                    }
+                                                                                    ?>' /></td>
                 </tr>
                 <tr>
                     <td>Promotion Price</td>
-                    <td><input type='text' name='promotion_price' class='form-control' /></td>
+                    <td><input type='text' name='promotion_price' class='form-control' value='<?php
+                                                                                                if (isset($_POST["promotion_price"])) {
+                                                                                                    echo $_POST["promotion_price"];
+                                                                                                }
+                                                                                                ?>' /></td>
                 </tr>
                 <tr>
                     <td>Manufacture Date</td>
-                    <td><input type='text' name='manufacture_date' class='form-control' /></td>
+                    <td><input type='date' name='manufacture_date' class='form-control' value='<?php
+                                                                                                if (isset($_POST["manufacture_date"])) {
+                                                                                                    echo $_POST["manufacture_date"];
+                                                                                                } ?>' /></td>
                 </tr>
                 <tr>
                     <td>Expired Date</td>
-                    <td><input type='text' name='expired_date' class='form-control' /></td>
+                    <td><input type='date' name='expired_date' class='form-control' value='<?php
+                                                                                            if (isset($_POST["expired_date"])) {
+                                                                                                echo $_POST["expired_date"];
+                                                                                            } ?>' /></td>
                 </tr>
                 <tr>
                     <td></td>
