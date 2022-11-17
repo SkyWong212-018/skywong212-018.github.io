@@ -54,21 +54,19 @@
                 }
 
                 if (empty($password)) {
-                    echo "<div class='alert alert-danger'>Password is empty.</div><br>";
+                    echo "<div class='alert alert-danger'>Please insert the Password.</div>";
                     $flag = true;
                 } else {
-                    $password = md5($_POST["password"]);
+                    $password = md5('password');
                 }
 
                 if (empty($confirm_password)) {
-                    echo "<div class='alert alert-danger'>Please confirm your password.</div><br>";
+                    echo "<div class='alert alert-danger'>Please insert the Confirm Password.</div>";
                     $flag = true;
-                } else if ($password == $confirm_password) {
-                    // success!
-
-                    $password = md5($password);
+                } else if ($_POST['password'] == $_POST['confirm_password']) {
+                    $password = md5('password');
                 } else {
-                    echo "<div class='alert alert-danger'> Please make sure your password are match.";
+                    echo "<div class='alert alert-danger'>Password not match.</div>";
                     $flag = true;
                 }
 
@@ -124,7 +122,7 @@
                         echo "<div class='alert alert-danger'>Unable to save record.</div>";
                     }
                 } else {
-                    echo "<div class='alert alert-danger'>Unable to save record gey.</div>";
+                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
                 }
             }
             // show error

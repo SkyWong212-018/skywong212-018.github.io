@@ -6,14 +6,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="<?php if ($_GET['page'] == "home") {
-                                    echo "active";
-                                } ?> nav-link" href="http://localhost/webdev/online_store/home.php?page=home">Home</a>
+                    <a class="nav-link" href="http://localhost/webdev/online_store/home.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="<?php if ($_GET['page'] == "product_create") {
-                                    echo "active";
-                                } ?> nav-link" href="http://localhost/webdev/online_store/product_create.php?page=product_create">Create Product</a>
+                    <a class="nav-link" href="http://localhost/webdev/online_store/product_create.php">Create Product</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost/webdev/online_store/product_read.php">Read Product</a>
