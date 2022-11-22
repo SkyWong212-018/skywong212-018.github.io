@@ -83,7 +83,7 @@
         //Username
         $username = htmlspecialchars(strip_tags($_POST['username']));
 
-        $query = "SELECT * FROM customers WHERE username=:username";
+        $query = "SELECT password, status FROM customers WHERE username=:username";
         $stmt = $con->prepare($query);
         $stmt->bindParam(':username', $username);
         $stmt->execute();
@@ -91,29 +91,16 @@
 
         //if num > 0 = found username from database
         if ($num > 0) {
+            // store retrieved row to a variable
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // values to fill up our form
+            $password = $row['password'];
+            $status = $row['status'];
+
             //Password
-            $password = htmlspecialchars(strip_tags($_POST['password']));
-
-            $query = "SELECT * FROM customers WHERE password=:password and username=:username";
-            $stmt = $con->prepare($query);
-            $stmt->bindParam(':password', $password);
-            $stmt->bindParam(':username', $username);
-            $stmt->execute();
-            $num = $stmt->rowCount();
-
-            //if num > 0 = found password from database & direct user to homepage
-            if ($num > 0) {
-                $status = 'Active';
-
-                $result = "SELECT * FROM customers WHERE username=:username and status=:status ";
-
-                $stmt = $con->prepare($result);
-                $stmt->bindParam(':username', $username);
-                $stmt->bindParam(':status', $status);
-                $stmt->execute();
-                $num = $stmt->rowCount();
-
-                if ($num > 0) {
+            if ($password == md5($_POST['password'])) {
+                if ($status == 'Active') {
                     header("Location: http://localhost/webdev/online_store/home.php");
                 } else {
                     $statusErr = "Your Account is suspended *";
@@ -155,12 +142,6 @@
                                                                                         } ?>'>
                     <label for="password ">
                         Password
-                    </label>
-                </div>
-
-                <div class="checkbox mb-3">
-                    <label>
-                        <input type="checkbox" value="remember-me"> Remember me
                     </label>
                 </div>
                 <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>

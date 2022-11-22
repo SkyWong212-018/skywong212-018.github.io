@@ -24,6 +24,15 @@
         <?php
         $flag = false;
 
+        //$_GET['action'] = action' will display in url
+        //If url have 'action'
+        if (isset($_GET['action'])) {
+            //If action = success print out 'Record was saved'
+            if ($_GET['action'] == 'success') {
+                echo "<div class='alert alert-success'>Record was saved.</div>";
+            }
+        }
+
         if ($_POST) {
             // include database connection
             include 'config/database.php';
@@ -96,6 +105,31 @@
                     $flag = true;
                 } else {
                     $date_of_birth = $_POST["date_of_birth"];
+                    //date2 = Today date
+                    $date2 = date("Y-m-d");
+                    //abs = let the result answer become positive no matter answer is negative or positive
+                    //strtotime = let english text become Unix timestamp
+                    $diff = strtotime($date2) - strtotime($date_of_birth);
+                    //floor is a function let 小数点 become 整数
+                    $years = floor($diff / (365 * 60 * 60 * 24));
+
+                    if ($years < 18) {
+                        echo "<div class='alert alert-danger'>Your age should be 18 and above</div><br>";
+                        $flag = true;
+                    }
+                }
+
+                //Username
+                $query = "SELECT username FROM customers WHERE username=:username";
+                $stmt = $con->prepare($query);
+                $stmt->bindParam(':username', $username);
+                $stmt->execute();
+                $num = $stmt->rowCount();
+
+                //if num > 0 = found username from database, print out error message
+                if ($num > 0) {
+                    echo "<div class='alert alert-danger'>The username is taken.</div><br>";
+                    $flag = true;
                 }
 
                 if ($flag == false) {
@@ -115,9 +149,10 @@
                     // specify when this record was inserted to the database
                     $created = date('Y-m-d H:i:s');
                     $stmt->bindParam(':registration', $created);
+
                     // Execute the query
                     if ($stmt->execute()) {
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                        header("Location: http://localhost/webdev/online_store/create_customer.php?action=success");
                     } else {
                         echo "<div class='alert alert-danger'>Unable to save record.</div>";
                     }
