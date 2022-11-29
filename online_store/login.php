@@ -1,10 +1,5 @@
 <?php
 session_start();
-if (isset($_GET["action"])) {
-    if ($_GET["action"] == "denied") {
-        echo "<div class='alert alert-danger'>Please log in.</div><br>";
-    }
-}
 ?>
 
 <!DOCTYPE HTML>
@@ -128,6 +123,13 @@ if (isset($_GET["action"])) {
     <main class="form-signin">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <form>
+                <?php
+                if (isset($_GET["action"])) {
+                    if ($_GET["action"] == "denied") {
+                        echo "<div class='alert alert-danger'>Please log in.</div><br>";
+                    }
+                }
+                ?>
                 <img class="mb-4" src="img/dodge.png" alt="dodge" width="72">
                 <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
                 <?php //Error message 
