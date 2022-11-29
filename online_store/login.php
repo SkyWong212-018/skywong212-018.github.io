@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (isset($_GET["action"])) {
+    if ($_GET["action"] == "denied") {
+        echo "<div class='alert alert-danger'>Please log in.</div><br>";
+    }
+}
+?>
+
 <!DOCTYPE HTML>
 <html>
 
@@ -101,7 +110,6 @@
             //Password
             if ($password == md5($_POST['password'])) {
                 if ($status == 'Active') {
-                    session_start();
                     //store username key in by username as a pass to let user to access the webpage
                     $_SESSION['username'] = $_POST['username'];
                     header("Location: http://localhost/webdev/online_store/home.php?login=success");
