@@ -11,6 +11,7 @@
     <!-- navigation bar -->
     <?php
     include 'menu.php';
+    include 'session.php';
     ?>
 
     <div class="ps-5">

@@ -18,11 +18,14 @@
                     <a class="nav-link" href="http://localhost/webdev/online_store/create_customer.php">Create Customer</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/webdev/online_store/read_customer.php">Read Customer</a>
+                    <a class="nav-link" href="http://localhost/webdev/online_store/customer_read.php">Read Customer</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="http://localhost/webdev/online_store/contact_us.php">Contact Us</a>
                 </li>
+                <td>
+                    <a href='logout.php' class='btn btn-danger'>Log Out</a>
+                </td>
             </ul>
         </div>
     </div>

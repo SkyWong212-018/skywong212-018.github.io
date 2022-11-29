@@ -11,6 +11,7 @@
     <!-- navigation bar -->
     <?php
     include 'menu.php';
+    include 'session.php';
     ?>
 
     <div class="row justify-content-center p-5">
