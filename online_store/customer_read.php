@@ -6,6 +6,11 @@
     <title>PDO - Create a Record - PHP CRUD Tutorial</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <style>
+        .m-r-1em {
+            margin-right: 1em;
+        }
+    </style>
 </head>
 
 <body>
@@ -73,7 +78,7 @@
                 echo "<a href='customer_read_one.php?username={$username}' class='btn btn-info m-r-1em'>Read</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='update.php?username={$username}' class='btn btn-primary m-r-1em'>Edit</a>";
+                echo "<a href='customer_update.php?username={$username}' class='btn btn-primary m-r-1em'>Edit</a>";
 
                 // we will use this links on next part of this post
                 echo "<a href='#' onclick='delete_user({$username});'  class='btn btn-danger'>Delete</a>";

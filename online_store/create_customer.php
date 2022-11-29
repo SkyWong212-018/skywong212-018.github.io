@@ -238,6 +238,7 @@
                                                                                                 echo $_POST["date_of_birth"];
                                                                                             }
                                                                                             ?>'>
+                    </td>
                 </tr>
 
                 <tr>
