@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>PDO - Create a Record - PHP CRUD Tutorial</title>
+    <title>Create Customer</title>
     <!-- Latest compiled and minified Bootstrap CSS (Apply your Bootstrap here -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 </head>
@@ -213,17 +213,17 @@
                 <tr>
                     <td>Gender</td>
                     <td>
-                        <input type="radio" id="male" name="gender" value="MALE" <?php
+                        <input type="radio" id="male" name="gender" value="male" <?php
                                                                                     if (isset($_POST["gender"])) {
-                                                                                        if ($gender == 'MALE') {
+                                                                                        if ($gender == 'male') {
                                                                                             echo "checked";
                                                                                         }
                                                                                     } ?> />
                         <label for="male">Male</label>
 
-                        <input type="radio" id="female" name="gender" value="FEMALE" <?php
+                        <input type="radio" id="female" name="gender" value="female" <?php
                                                                                         if (isset($_POST["gender"])) {
-                                                                                            if ($gender == 'FEMALE') {
+                                                                                            if ($gender == 'female') {
                                                                                                 echo "checked";
                                                                                             }
                                                                                         } ?> />
@@ -245,7 +245,7 @@
                     <td></td>
                     <td>
                         <input type='submit' value='Save' class='btn btn-primary' />
-                        <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                        <a href='customer_read.php' class='btn btn-danger'>Back to read customer</a>
                     </td>
                 </tr>
             </table>

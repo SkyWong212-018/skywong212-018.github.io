@@ -1,8 +1,10 @@
+<?php include 'session.php'; ?>
+
 <!DOCTYPE HTML>
 <html>
 
 <head>
-    <title>PDO - Read Records - PHP CRUD Tutorial</title>
+    <title>Update Customer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <style>
         .m-r-1em {
@@ -29,6 +31,7 @@
             <h1>Update Customer</h1>
         </div>
         <?php
+        $flag = false;
         //include database connection
         include 'config/database.php';
         // get passed parameter value, in this case, the record ID
@@ -71,32 +74,79 @@
         // check if form was submitted
         if ($_POST) {
             try {
+                //posted values
+                //empty username
+                if (empty($username)) {
+                    echo "<div class='alert alert-danger'>Username is empty.</div><br>";
+                    $flag = true;
+                } else {
+                    $username = htmlspecialchars(strip_tags($_POST['username']));
+                    if (strlen($username) < 6) {
+                        echo "<div class='alert alert-danger'>Username must be more than 6 characters.</div><br>";
+                        $flag = true;
+                    }
+                }
+
+                //if empty 3 section can proceed
+                if (empty($password)) {
+                    //confirm old password is same with previous password that user set, same = proceed, diff = error
+                    if (md5($_POST['old_password']) == $password) {
+                        //if new password diff with old password can proceed, same = error
+                        if (!md5($_POST['new_password']) == md5($_POST['old_password'])) {
+                            //if confirm password same with new password can proceed, diff = error
+                            if (md5($_POST['confirm_password']) == md5($_POST['new_password'])) {
+                                $password = md5($new_password);
+                            } else {
+                                echo "<div class='alert alert-danger'>Confirm password is not match with new password.</div>";
+                                $flag = true;
+                            }
+                        } else {
+                            echo "<div class='alert alert-danger'>New password cannot same with old password.</div>";
+                            $flag = true;
+                        }
+                    } else {
+                        echo "<div class='alert alert-danger'>Old password is wrong.</div>";
+                        $flag = true;
+                    }
+                }
+
+                //empty first name
+                if (empty($first_name)) {
+                    echo "<div class='alert alert-danger'>First name is empty.</div><br>";
+                    $flag = true;
+                } else {
+                    $first_name = htmlspecialchars(strip_tags($_POST['first_name']));
+                }
+
+                //empty last name
+                if (empty($last_name)) {
+                    echo "<div class='alert alert-danger'>Last name is empty.</div><br>";
+                    $flag = true;
+                } else {
+                    $last_name = htmlspecialchars(strip_tags($_POST['last_name']));
+                }
+
                 // write update query
                 // in this case, it seemed like we have so many fields to pass and
                 // it is better to label them and not use question marks
-                $query = "UPDATE customers
-                  SET username=:username, password=:password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth  WHERE username = :username";
-                // prepare query for excecution
-                $stmt = $con->prepare($query);
-                // posted values
-                $username = htmlspecialchars(strip_tags($_POST['username']));
-                $password = htmlspecialchars(strip_tags($_POST['password']));
-                $first_name = htmlspecialchars(strip_tags($_POST['first_name']));
-                $last_name = htmlspecialchars(strip_tags($_POST['last_name']));
-                $gender = htmlspecialchars(strip_tags($_POST['gender']));
-                $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
-                // bind the parameters
-                $stmt->bindParam(':username', $userame);
-                $stmt->bindParam(':password', $password);
-                $stmt->bindParam(':first_name', $first_name);
-                $stmt->bindParam(':last_name', $last_name);
-                $stmt->bindParam(':gender', $gender);
-                $stmt->bindParam(':date_of_birth', $date_of_birth);
-                // Execute the query
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was updated.</div>";
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                if ($flag == false) {
+                    $query = "UPDATE customers
+                    SET username=:username, password=:new_password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth  WHERE username = :username";
+                    // prepare query for excecution
+                    $stmt = $con->prepare($query);
+                    // bind the parameters
+                    $stmt->bindParam(':username', $userame);
+                    $stmt->bindParam(':new_password', $password);
+                    $stmt->bindParam(':first_name', $first_name);
+                    $stmt->bindParam(':last_name', $last_name);
+                    $stmt->bindParam(':gender', $gender);
+                    $stmt->bindParam(':date_of_birth', $date_of_birth);
+                    // Execute the query
+                    if ($stmt->execute()) {
+                        echo "<div class='alert alert-success'>Record was updated.</div>";
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                    }
                 }
             }
             // show errors
@@ -123,7 +173,7 @@
                 </tr>
                 <tr>
                     <td>Confirm new password</td>
-                    <td><input type='password' name='new_password' class='form-control' /></td>
+                    <td><input type='password' name='confirm_password' class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>First name</td>
@@ -135,13 +185,22 @@
                 </tr>
                 <tr>
                     <td>Gender</td>
-                    <td><input type='radio' id=male name='gender' value="MALE" /> <label for="male">Male</label>
-                        <input type='radio' id=female name='gender' value="FEMALE" /> <label for="female">Female</label>
+                    <td><input type='radio' id=male name='gender' value="male" <?php
+                                                                                if ($gender == 'male') {
+                                                                                    echo "checked";
+                                                                                }
+                                                                                ?> /> <label for="male">Male</label>
+
+                        <input type='radio' id=female name='gender' value="female" <?php
+                                                                                    if ($gender == 'female') {
+                                                                                        echo "checked";
+                                                                                    }
+                                                                                    ?> /> <label for="female">Female</label>
                     </td>
                 </tr>
                 <tr>
                     <td>Date of birth</td>
-                    <td><input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo htmlspecialchars($last_name, ENT_QUOTES); ?>" />
+                    <td><input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" />
                     </td>
                 </tr>
                 <tr>
