@@ -36,16 +36,16 @@
         include 'config/database.php';
         // get passed parameter value, in this case, the record ID
         // isset() is a PHP function used to verify if a value is there or not
-        $username = isset($_GET['username']) ? $_GET['username'] : die('ERROR: Record Username not found.');
+        $customer_id = isset($_GET['customer_id']) ? $_GET['customer_id'] : die('ERROR: Record Username not found.');
 
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT username, password, first_name, last_name, gender, date_of_birth FROM customers WHERE username = ? LIMIT 0,1";
+            $query = "SELECT customer_id ,username, password, first_name, last_name, gender, date_of_birth FROM customers WHERE customer_id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
-            $stmt->bindParam(1, $username);
+            $stmt->bindParam(1, $customer_id);
 
             // execute our query
             $stmt->execute();
@@ -55,6 +55,7 @@
 
             // values to fill up our form
             if ($row) {
+                $customer_id = $row['customer_id'];
                 $username = $row['username'];
                 $password = $row['password'];
                 $first_name = $row['first_name'];
@@ -87,8 +88,8 @@
                     }
                 }
 
-                //if empty 3 section can proceed
-                if (empty($password)) {
+                //if 3 section is not empty, then do checking
+                if (!empty($_POST['old_password']) && !empty($_POST['new_password']) && !empty($_POST['confirm_password'])) {
                     //confirm old password is same with previous password that user set, same = proceed, diff = error
                     if (md5($_POST['old_password']) == $password) {
                         //if new password diff with old password can proceed, same = error
@@ -126,16 +127,32 @@
                     $last_name = htmlspecialchars(strip_tags($_POST['last_name']));
                 }
 
+                $gender = htmlspecialchars(strip_tags($_POST['gender']));
+                $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
+                //date2 = Today date
+                $date2 = date("Y-m-d");
+                //abs = let the result answer become positive no matter answer is negative or positive
+                //strtotime = let english text become Unix timestamp
+                $diff = strtotime($date2) - strtotime($date_of_birth);
+                //floor is a function let 小数点 become 整数
+                $years = floor($diff / (365 * 60 * 60 * 24));
+
+                if ($years < 18) {
+                    echo "<div class='alert alert-danger'>Your age should be 18 and above</div><br>";
+                    $flag = true;
+                }
+
                 // write update query
                 // in this case, it seemed like we have so many fields to pass and
                 // it is better to label them and not use question marks
                 if ($flag == false) {
                     $query = "UPDATE customers
-                    SET username=:username, password=:new_password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth  WHERE username = :username";
+                    SET username=:username, password=:new_password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth  WHERE customer_id=:customer_id";
                     // prepare query for excecution
                     $stmt = $con->prepare($query);
                     // bind the parameters
-                    $stmt->bindParam(':username', $userame);
+                    $stmt->bindParam(':customer_id', $customer_id);
+                    $stmt->bindParam(':username', $username);
                     $stmt->bindParam(':new_password', $password);
                     $stmt->bindParam(':first_name', $first_name);
                     $stmt->bindParam(':last_name', $last_name);
@@ -157,7 +174,7 @@
 
 
         <!--we have our html form here where new record information can be updated-->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?username={$username}"); ?>" method="post">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?customer_id={$customer_id}"); ?>" method="post">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Username</td>
@@ -207,7 +224,7 @@
                     <td></td>
                     <td>
                         <input type='submit' value='Save Changes' class='btn btn-primary' />
-                        <a href='customer_read.php' class='btn btn-danger'>Back to read products</a>
+                        <a href='customer_read.php' class='btn btn-danger'>Back to read customers</a>
                     </td>
                 </tr>
             </table>
