@@ -128,6 +128,7 @@
                 }
 
                 $gender = htmlspecialchars(strip_tags($_POST['gender']));
+
                 $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
                 //date2 = Today date
                 $date2 = date("Y-m-d");
@@ -147,13 +148,13 @@
                 // it is better to label them and not use question marks
                 if ($flag == false) {
                     $query = "UPDATE customers
-                    SET username=:username, password=:new_password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth  WHERE customer_id=:customer_id";
+                    SET username=:username, password=:password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth  WHERE customer_id=:customer_id";
                     // prepare query for excecution
                     $stmt = $con->prepare($query);
                     // bind the parameters
                     $stmt->bindParam(':customer_id', $customer_id);
                     $stmt->bindParam(':username', $username);
-                    $stmt->bindParam(':new_password', $password);
+                    $stmt->bindParam(':password', $password);
                     $stmt->bindParam(':first_name', $first_name);
                     $stmt->bindParam(':last_name', $last_name);
                     $stmt->bindParam(':gender', $gender);
@@ -186,7 +187,7 @@
                 </tr>
                 <tr>
                     <td>New password</td>
-                    <td><input type='password' name='new_password' class='form-control' /></td>
+                    <td><input type='password' name='password' class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Confirm new password</td>

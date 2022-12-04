@@ -23,16 +23,16 @@
 
         // get passed parameter value, in this case, the record ID
         // isset() is a PHP function used to verify if a value is there or not
-        $username = isset($_GET['username']) ? $_GET['username'] : die('ERROR: Record Username not found.');
+        $customer_id = isset($_GET['customer_id']) ? $_GET['customer_id'] : die('ERROR: Record Username not found.');
 
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT username, password, first_name, last_name, gender, date_of_birth FROM customers WHERE username = ? LIMIT 0,1";
+            $query = "SELECT customer_id ,username, password, first_name, last_name, gender, date_of_birth FROM customers WHERE customer_id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
-            $stmt->bindParam(1, $username);
+            $stmt->bindParam(1, $customer_id);
 
             // execute our query
             $stmt->execute();
@@ -42,6 +42,7 @@
 
             // values to fill up our form
             if ($row) {
+                $customer_id = $row['customer_id'];
                 $username = $row['username'];
                 $password = $row['password'];
                 $first_name = $row['first_name'];

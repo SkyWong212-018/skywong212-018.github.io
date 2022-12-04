@@ -67,14 +67,14 @@
                     echo "<div class='alert alert-danger'>Please insert the Password.</div>";
                     $flag = true;
                 } else {
-                    $password = md5('password');
+                    $password = md5($_POST['password']);
                 }
 
                 if (empty($confirm_password)) {
                     echo "<div class='alert alert-danger'>Please insert the Confirm Password.</div>";
                     $flag = true;
                 } else if ($_POST['password'] == $_POST['confirm_password']) {
-                    $password = md5('password');
+                    $password = md5($_POST['password']);
                 } else {
                     echo "<div class='alert alert-danger'>Password not match.</div>";
                     $flag = true;
