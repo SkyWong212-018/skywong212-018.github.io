@@ -73,8 +73,8 @@ include 'session.php';
                         $stmt->bindParam(':total_amount', $total_amount);
                         if ($stmt->execute()) {
                             echo "<div class='alert alert-success'>Create order successful.</div>";
-                            //if success > insert id
-                            $lastid = $con->lastInsertId();
+                            //if success > insert 'order_id' put into 'order_details' table
+                            $order_id = $con->lastInsertId();
 
                             //calculate 'price each'
                             for ($x = 0; $x < 3; $x++) {
@@ -97,7 +97,7 @@ include 'session.php';
                                 //product & quantity is array, [0,1,2]
                                 $stmt->bindParam(':product_id', $product[$x]);
                                 $stmt->bindParam(':quantity', $quantity[$x]);
-                                $stmt->bindParam(':orderid', $lastid);
+                                $stmt->bindParam(':orderid', $order_id);
                                 $stmt->bindParam(':price_each', $price_each);
                                 $stmt->execute();
                             }
