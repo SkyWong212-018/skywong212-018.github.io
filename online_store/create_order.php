@@ -1,175 +1,181 @@
-<?php include 'session.php'; ?>
+<?php
+include 'session.php';
+?>
+
 <!DOCTYPE HTML>
 <html>
 
 <head>
     <title>Create Order</title>
-    <!-- Latest compiled and minified Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <style>
-        .m-r-1em {
-            margin-right: 1em;
-        }
-
-        .scrollable-menu {
-            height: auto;
-            max-height: 200px;
-            overflow-x: hidden;
-        }
-    </style>
 </head>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
 <body>
-    <!-- navigation bar -->
     <?php
     include 'menu.php';
+    include 'config/database.php';
+    $flag = false;
     ?>
 
     <!-- container -->
     <div class="container">
-        <div class="page-header">
-            <h1>Create Order</h1>
-        </div>
+        <div class="row fluid">
+            <div class="col-md-10">
+                <div class="page-header top_text mt-5 mb-3">
+                    <h2>Create Order</h2>
+                </div>
 
-        <!-- Customer -->
-        <button class="btn btn-primary dropdown-toggle my-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Customer
-        </button>
-        <ul class="dropdown-menu scrollable-menu">
-            <?php
-            include 'config/database.php';
+                <?php
+                $userErr = "";
 
-            $query = "SELECT customer_id ,username FROM customers ORDER BY customer_id DESC";
-            $stmt = $con->prepare($query);
-            $stmt->execute();
+                if ($_POST) {
+                    if (empty($_POST["username"])) {
+                        $userErr = "Username is required*";
+                        $flag = true;
+                    } else {
+                        $customer_id = htmlspecialchars(strip_tags($_POST['username']));
+                    }
 
-            $num = $stmt->rowCount();
+                    $product = $_POST["product"];
+                    $quantity = $_POST["quantity"];
 
-            if ($num > 0) {
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    extract($row);
-            ?>
-                    <option value="<?php echo $username ?>"><?php echo $username ?></option>
-            <?php
-                }
-            }
-            echo "</ul>";
-            ?>
+                    if ($flag == false) {
+                        $total_amount = 0;
 
-            <!-- Product 1 -->
-            <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Product 1
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        // can do 3 product in 1 'for loop'
+                        //calculate total amount of 3 product
+                        for ($x = 0; $x < 3; $x++) {
+
+                            $query = "SELECT price, promotion_price FROM products WHERE id = :id";
+                            $stmt = $con->prepare($query);
+                            $stmt->bindParam(':id', $product[$x]);
+                            $stmt->execute();
+                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                            //if promotion_price = 0, show 'price', else show 'promotion price'
+                            if ($row['promotion_price'] == 0) {
+                                $price = $row['price'];
+                            } else {
+                                $price = $row['promotion_price'];
+                            }
+
+                            //combine prvious total_amount (total_amount = 0) with new ones
+                            $total_amount = $total_amount + ($price * $quantity[$x]);
+                        }
+
+                        //send data to 'order_summary'
+                        $order_date = date('Y-m-d');
+                        $query = "INSERT INTO order_summary SET customer_id=:customer_id, order_date=:order_date, total_amount=:total_amount";
+                        $stmt = $con->prepare($query);
+                        $stmt->bindParam(':customer_id', $customer_id);
+                        $stmt->bindParam(':order_date', $order_date);
+                        $stmt->bindParam(':total_amount', $amount);
+                        if ($stmt->execute()) {
+                            echo "<div class='alert alert-success'>Able to create order.</div>";
+                            //if success > insert id
+                            $lastid = $con->lastInsertId();
+
+                            //calculate 'price each'
+                            for ($x = 0; $x < 3; $x++) {
+                                $query = "SELECT price, promotion_price FROM products WHERE id = :id";
+                                $stmt = $con->prepare($query);
+                                $stmt->bindParam(':id', $product[$x]);
+                                $stmt->execute();
+                                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                if ($row['promotion_price'] == 0) {
+                                    $price = $row['price'];
+                                } else {
+                                    $price = $row['promotion_price'];
+                                }
+                                $price_each = $price * $quantity[$x];
+
+                                //send data to 'order_details'
+                                $query = "INSERT INTO order_details SET product_id=:product_id, quantity=:quantity,order_id=:orderid, price_each=:price_each";
+                                $stmt = $con->prepare($query);
+                                //product & quantity is array, [0,1,2]
+                                $stmt->bindParam(':product_id', $product[$x]);
+                                $stmt->bindParam(':quantity', $quantity[$x]);
+                                $stmt->bindParam(':orderid', $lastid);
+                                $stmt->bindParam(':price_each', $price_each);
+                                $stmt->execute();
+                            }
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to create order.</div>";
+                        }
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to create order.</div>";
+                    }
+                } ?>
+
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
                     <?php
-                    include 'config/database.php';
-
-                    $query = "SELECT id ,name FROM products ORDER BY id DESC";
+                    $query = "SELECT customer_id, username FROM customers ORDER BY customer_id DESC";
                     $stmt = $con->prepare($query);
                     $stmt->execute();
-
                     $num = $stmt->rowCount();
-
-                    if ($num > 0) {
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            extract($row);
                     ?>
-                            <option value="<?php echo $name ?>"><?php echo $name ?></option>
-                    <?php
-                        }
-                    }
-                    echo "</ul>";
-                    ?>
-                    <form>
-                        <div class="col-2">
-                            <div class="mb-1">
-                                <label for="quantity" class="form-label">Quantity</label>
-                                <input type="text" class="form-control" id="quantity">
-                            </div>
-                            <div class="mb-3">
-                                <label for="price" class="form-label">Price</label>
-                                <input type="text" class="form-control" id="price" value='<?php  ?>'>
-                            </div>
-                    </form>
 
-                    <!-- Product 2 -->
-                    <div class="dropdown">
-                        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            Product 2
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <?php
-                            include 'config/database.php';
+                    <table class='table table-hover table-responsive table-bordered mb-5'>
+                        <div class="row">
+                            <label class="order-form-label">Username</label>
+                        </div>
 
-                            $query = "SELECT id ,name FROM products ORDER BY id DESC";
+                        <div class="col-6 mb-3 mt-2">
+                            <select class="form-select" name="username" aria-label="form-select-lg example">
+                                <option value='' selected>Choose Username</option>
+                                <?php
+                                if ($num > 0) {
+                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                        extract($row); ?>
+                                        <option value="<?php echo $customer_id; ?>"><?php echo htmlspecialchars($username, ENT_QUOTES); ?></option>
+                                <?php }
+                                }
+                                ?>
+
+                            </select>
+
+                        </div>
+
+                        <?php
+                        //forloop, for 3 product
+                        for ($x = 0; $x < 3; $x++) {
+                            $query = "SELECT id, name FROM products ORDER BY id DESC";
                             $stmt = $con->prepare($query);
                             $stmt->execute();
-
                             $num = $stmt->rowCount();
+                        ?>
 
-                            if ($num > 0) {
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    extract($row);
-                            ?>
-                                    <option value="<?php echo $name ?>"><?php echo $name ?></option>
-                            <?php
-                                }
-                            }
-                            echo "</ul>";
-                            ?>
-                        </ul>
-                    </div>
-                    <form>
-                        <div class="mb-1">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <input type="text" class="form-control" id="quantity">
-                        </div>
-                        <div class="mb-1">
-                            <label for="price" class="form-label">Price</label>
-                            <input type="text" class="form-control" id="price">
-                    </form>
+                            <div class="row">
+                                <label class="order-form-label">Product</label>
 
-                    <!-- Product 3 -->
-                    <div class="dropdown">
-                        <button class="btn btn-info dropdown-toggle mt-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            Product 3
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <?php
-                            include 'config/database.php';
+                                <div class="col-3 mb-2 mt-2">
+                                    <span class="error"><?php //echo $userErr; 
+                                                        ?></span>
+                                    <select class="form-select" name="product[]" aria-label="form-select-lg example">
+                                        <option selected>Choose Product</option>
+                                        <?php
+                                        if ($num > 0) {
+                                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                extract($row); ?>
+                                                <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($name, ENT_QUOTES); ?></option>
+                                        <?php }
+                                        }
+                                        ?>
 
-                            $query = "SELECT id ,name FROM products ORDER BY id DESC";
-                            $stmt = $con->prepare($query);
-                            $stmt->execute();
+                                    </select>
+                                </div>
 
-                            $num = $stmt->rowCount();
+                                <input class="col-1 mb-2 mt-2" type="number" id="quantity[]" name="quantity[]" min=1>
+                            </div>
+                        <?php } ?>
 
-                            if ($num > 0) {
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    extract($row);
-                            ?>
-                                    <option value="<?php echo $name ?>"><?php echo $name ?></option>
-                            <?php
-                                }
-                            }
-                            echo "</ul>";
-                            ?>
-                        </ul>
-                    </div>
-                    <form>
-                        <div class="mb-1">
-                            <label for="quantity" class="form-label">Quantity</label>
-                            <input type="text" class="form-control" id="quantity">
-                        </div>
-                        <div class="mb-3">
-                            <label for="price" class="form-label">Price</label>
-                            <input type="text" class="form-control" id="price">
-                    </form>
+                    </table>
+                    <input type="submit" class="btn btn-primary" />
+                </form>
 
-                    <td>
-                        <input type='submit' value='Save' class='btn btn-success mt-3' />
-                    </td>
             </div> <!-- end .container -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
             <!-- confirm delete record will be here -->
