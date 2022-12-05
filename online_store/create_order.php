@@ -28,11 +28,10 @@ include 'session.php';
                 </div>
 
                 <?php
-                $userErr = "";
 
                 if ($_POST) {
                     if (empty($_POST["username"])) {
-                        $userErr = "Username is required*";
+                        echo "<div class='alert alert-danger'>Need to select customer.</div>";
                         $flag = true;
                     } else {
                         $customer_id = htmlspecialchars(strip_tags($_POST['username']));
@@ -71,9 +70,9 @@ include 'session.php';
                         $stmt = $con->prepare($query);
                         $stmt->bindParam(':customer_id', $customer_id);
                         $stmt->bindParam(':order_date', $order_date);
-                        $stmt->bindParam(':total_amount', $amount);
+                        $stmt->bindParam(':total_amount', $total_amount);
                         if ($stmt->execute()) {
-                            echo "<div class='alert alert-success'>Able to create order.</div>";
+                            echo "<div class='alert alert-success'>Create order successful.</div>";
                             //if success > insert id
                             $lastid = $con->lastInsertId();
 
@@ -103,10 +102,10 @@ include 'session.php';
                                 $stmt->execute();
                             }
                         } else {
-                            echo "<div class='alert alert-danger'>Unable to create order.</div>";
+                            echo "<div class='alert alert-danger'>Create order failed.</div>";
                         }
                     } else {
-                        echo "<div class='alert alert-danger'>Unable to create order.</div>";
+                        echo "<div class='alert alert-danger'>Create order failed.</div>";
                     }
                 } ?>
 
@@ -125,7 +124,7 @@ include 'session.php';
 
                         <div class="col-6 mb-3 mt-2">
                             <select class="form-select" name="username" aria-label="form-select-lg example">
-                                <option value='' selected>Choose Username</option>
+                                <option value='' selected>- Customer -</option>
                                 <?php
                                 if ($num > 0) {
                                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -155,7 +154,7 @@ include 'session.php';
                                     <span class="error"><?php //echo $userErr; 
                                                         ?></span>
                                     <select class="form-select" name="product[]" aria-label="form-select-lg example">
-                                        <option selected>Choose Product</option>
+                                        <option selected>- Product -</option>
                                         <?php
                                         if ($num > 0) {
                                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
