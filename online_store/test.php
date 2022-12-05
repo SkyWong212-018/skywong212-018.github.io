@@ -1,199 +1,199 @@
-<?php include 'session.php'; ?>
+<?php
+//security guard, need to be at the very first
+//usually placed here
+include 'session.php';
+?>
 
 <!DOCTYPE HTML>
 <html>
 
 <head>
-    <title>Update Customer</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <style>
-        .m-r-1em {
-            margin-right: 1em;
-        }
-
-        .m-b-1em {
-            margin-bottom: 1em;
-        }
-
-        .m-l-1em {
-            margin-left: 1em;
-        }
-
-        .mt0 {
-            margin-top: 0;
-        }
-    </style>
+    <title>J_OrderCreate</title>
 </head>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="icon" href="img/logo_yellow.png" sizes="32x32" type="image/png">
+
 <body>
+    <?php
+    include 'nav.php';
+    include 'config/database.php'; // include database connection
+    $flag = false;
+    ?>
+
+    <!-- container -->
     <div class="container">
-        <div class="page-header">
-            <h1>Update Customer</h1>
-        </div>
-        <?php
-        //include database connection
-        include 'config/database.php';
-        // get passed parameter value, in this case, the record ID
-        // isset() is a PHP function used to verify if a value is there or not
-        $username = isset($_GET['username']) ? $_GET['username'] : die('ERROR: Record Username not found.');
+        <div class="row fluid bg-color justify-content-center">
+            <div class="col-md-10">
+                <div class="page-header top_text mt-5 mb-3 text-warning">
+                    <h2>Order Create</h2>
+                </div>
 
-        // read current record's data
-        try {
-            // prepare select query
-            $query = "SELECT username, password, first_name, last_name, gender, date_of_birth FROM customers WHERE username = ? LIMIT 0,1";
-            $stmt = $con->prepare($query);
+                <!-- html form to create product will be here -->
+                <!-- PHP insert code will be here -->
 
-            // this is the first question mark
-            $stmt->bindParam(1, $username);
+                <?php
+                // check if form was submitted
 
-            // execute our query
-            $stmt->execute();
+                // link to create record form
+                echo "<a href='order_summary.php' class='btn btn-warning m-b-1em mb-3'>Order Summary</a>";
 
-            // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // values to fill up our form
-            if ($row) {
-                $username = $row['username'];
-                $password = $row['password'];
-                $first_name = $row['first_name'];
-                $last_name = $row['last_name'];
-                $gender = $row['gender'];
-                $date_of_birth = $row['date_of_birth'];
-            }
-        }
-
-        // show error
-        catch (PDOException $exception) {
-            die('ERROR: ' . $exception->getMessage());
-        }
-        ?>
-
-        <?php
-        // check if form was submitted
-        if ($_POST) {
-            $flag = false;
-            $old_password = md5($_POST['old_password']);
-            $new_password = md5($_POST['new_password']);
-            $confirm_password = md5($_POST['confirm_password']);
-
-            try {
-                if (!$old_password == $password) {
-                    echo "<div class='alert alert-danger'>Old password is incorrect.</div><br>";
-                    $flag = true;
-                }
-
-                if ($new_password == $password) {
-                    echo "<div class='alert alert-danger'>New password cannot be same as old password.</div><br>";
-                    $flag = true;
-                }
-
-                if (!$confirm_password == $new_password) {
-                    echo "<div class='alert alert-danger'>Confirm password is incorrect.</div><br>";
-                    $flag = true;
-                }
-
-                if (empty($username)) {
-                    echo "<div class='alert alert-danger'>Username is empty.</div><br>";
-                    $flag = true;
-                }
-
-                // write update query
-                // in this case, it seemed like we have so many fields to pass and
-                // it is better to label them and not use question marks
-                if ($flag == false) {
-                    $query = "UPDATE customers
-                    SET username=:username, password=:new_password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth  WHERE username = :username";
-                    // prepare query for excecution
-                    $stmt = $con->prepare($query);
-                    // posted values
-                    $username = htmlspecialchars(strip_tags($_POST['username']));
-                    $password = htmlspecialchars(strip_tags($_POST['new_password']));
-                    $first_name = htmlspecialchars(strip_tags($_POST['first_name']));
-                    $last_name = htmlspecialchars(strip_tags($_POST['last_name']));
-                    $gender = htmlspecialchars(strip_tags($_POST['gender']));
-                    $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
-                    // bind the parameters
-                    $stmt->bindParam(':username', $userame);
-                    $stmt->bindParam(':new_password', $password);
-                    $stmt->bindParam(':first_name', $first_name);
-                    $stmt->bindParam(':last_name', $last_name);
-                    $stmt->bindParam(':gender', $gender);
-                    $stmt->bindParam(':date_of_birth', $date_of_birth);
-                    // Execute the query
-                    if ($stmt->execute()) {
-                        echo "<div class='alert alert-success'>Record was updated.</div>";
+                if ($_POST) {
+                    if (empty($_POST["username"])) {
+                        $userErr = "Username is required*";
+                        $flag = true;
                     } else {
-                        echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                        $customer_id = htmlspecialchars(strip_tags($_POST['username']));
                     }
-                }
-            }
-            // show errors
-            catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
-            }
-        } ?>
+
+                    //submit user fill in de product and quantity
+                    $product = $_POST["product"];
+                    $quantity = $_POST["quantity"];
 
 
-        <!--we have our html form here where new record information can be updated-->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?username={$username}"); ?>" method="post">
-            <table class='table table-hover table-responsive table-bordered'>
-                <tr>
-                    <td>Username</td>
-                    <td><input type='text' name='username' value="<?php echo htmlspecialchars($username, ENT_QUOTES);  ?>" class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Old password</td>
-                    <td><input type='password' name='old_password' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>New password</td>
-                    <td><input type='password' name='new_password' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Confirm new password</td>
-                    <td><input type='password' name='confirm_password' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>First name</td>
-                    <td><input type='text' name='first_name' value="<?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?>" class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Last name</td>
-                    <td><input type='text' name='last_name' value="<?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?>" class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Gender</td>
-                    <td><input type='radio' id=male name='gender' value="male" <?php
-                                                                                if ($gender == 'male') {
-                                                                                    echo "checked";
-                                                                                }
-                                                                                ?> /> <label for="male">Male</label>
+                    if ($flag == false) {
+                        $total_amount = 0;
 
-                        <input type='radio' id=female name='gender' value="female" <?php
-                                                                                    if ($gender == 'female') {
-                                                                                        echo "checked";
-                                                                                    }
-                                                                                    ?> /> <label for="female">Female</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date of birth</td>
-                    <td><input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type='submit' value='Save Changes' class='btn btn-primary' />
-                        <a href='customer_read.php' class='btn btn-danger'>Back to read products</a>
-                    </td>
-                </tr>
-            </table>
-        </form>
+                        for ($x = 0; $x < 3; $x++) {
 
-    </div>
-    <!-- end .container -->
+                            $query = "SELECT price, promotion_price FROM products WHERE id = :id";
+                            $stmt = $con->prepare($query);
+                            $stmt->bindParam(':id', $product[$x]);
+                            $stmt->execute();
+                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                            if ($row['promotion_price'] == 0) {
+                                $price = $row['price'];
+                            } else {
+                                $price = $row['promotion_price'];
+                            }
+
+                            //combine prvious total_amount with new ones, loop (3 times)
+                            $total_amount = $total_amount + ($price * $quantity[$x]);
+                        }
+                        echo $amount;
+                        //send data to 'order_summary' table in myphp
+                        $order_date = date('Y-m-d');
+                        $query = "INSERT INTO order_summary SET customer_id=:customer_id, order_date=:order_date, total_amount=:total_amount";
+                        $stmt = $con->prepare($query);
+                        $stmt->bindParam(':customer_id', $customer_id);
+                        $stmt->bindParam(':order_date', $order_date);
+                        $stmt->bindParam(':total_amount', $amount);
+                        if ($stmt->execute()) {
+                            echo "<div class='alert alert-success'>Able to create order.</div>";
+                            //if success > insert id
+                            $lastid = $con->lastInsertId();
+
+                            for ($x = 0; $x < 3; $x++) {
+                                $query = "SELECT price, promotion_price FROM products WHERE id = :id";
+                                $stmt = $con->prepare($query);
+                                $stmt->bindParam(':id', $product[$x]);
+                                $stmt->execute();
+                                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                if ($row['promotion_price'] == 0) {
+                                    $price = $row['price'];
+                                } else {
+                                    $price = $row['promotion_price'];
+                                }
+                                $price_each = $price * $quantity[$x];
+
+                                //send data to 'order_details' table in myphp
+                                $query = "INSERT INTO order_details SET product_id=:product_id, quantity=:quantity,order_id=:orderid, price_each=:price_each";
+                                $stmt = $con->prepare($query);
+                                //product & quantity is array, [0,1,2]
+                                $stmt->bindParam(':product_id', $product[$x]);
+                                $stmt->bindParam(':quantity', $quantity[$x]);
+                                $stmt->bindParam(':orderid', $lastid);
+                                $stmt->bindParam(':price_each', $price_each);
+                                $stmt->execute();
+                            }
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to create order.</div>";
+                        }
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to create order.</div>";
+                    }
+                } ?>
+
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
+                    <?php
+                    // select customer
+                    $query = "SELECT customer_id, username FROM customer ORDER BY customer_id DESC";
+                    $stmt = $con->prepare($query);
+                    $stmt->execute();
+                    // this is how to get number of rows returned
+                    $num = $stmt->rowCount();
+                    ?>
+
+
+                    <table class='table table-hover table-responsive table-bordered mb-5'>
+                        <div class="row">
+                            <label class="order-form-label">Username</label>
+                        </div>
+
+                        <div class="col-6 mb-3 mt-2">
+                            <select class="form-select" name="username" aria-label="form-select-lg example">
+                                <option value='' selected>Choose Username</option>
+                                <?php
+                                //if more then 0, value="01">"username"</option>
+                                if ($num > 0) {
+                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                        extract($row); ?>
+                                        <option value="<?php echo $customer_id; ?>"><?php echo htmlspecialchars($username, ENT_QUOTES); ?></option>
+                                <?php }
+                                }
+                                ?>
+
+                            </select>
+
+                        </div>
+
+                        <?php
+                        //forloop, for 3 product
+                        for ($x = 0; $x < 3; $x++) {
+                            // select product
+                            $query = "SELECT id, name FROM products ORDER BY id DESC";
+                            $stmt = $con->prepare($query);
+                            $stmt->execute();
+                            // this is how to get number of rows returned
+                            $num = $stmt->rowCount();
+                        ?>
+
+                            <div class="row">
+                                <label class="order-form-label">Product</label>
+
+                                <div class="col-3 mb-2 mt-2">
+                                    <span class="error"><?php //echo $userErr; 
+                                                        ?></span>
+                                    <select class="form-select" name="product[]" aria-label="form-select-lg example">
+                                        <option selected>Choose Product</option>
+                                        <?php
+                                        if ($num > 0) {
+                                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                extract($row); ?>
+                                                <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($name, ENT_QUOTES); ?></option>
+                                        <?php }
+                                        }
+                                        ?>
+
+                                    </select>
+                                </div>
+
+                                <input class="col-1 mb-2 mt-2" type="number" id="quantity[]" name="quantity[]" min=1>
+                            </div>
+                        <?php } ?>
+
+
+                    </table>
+                    <input type="submit" class="btn btn-primary" />
+                </form>
+
+            </div> <!-- end .container -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+            <!-- confirm delete record will be here -->
+
 </body>
 
 </html>
