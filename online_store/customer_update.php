@@ -41,7 +41,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT customer_id ,username, password, first_name, last_name, gender, date_of_birth FROM customers WHERE customer_id = ? LIMIT 0,1";
+            $query = "SELECT customer_id, username, password, first_name, last_name, gender, date_of_birth FROM customers WHERE customer_id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -76,17 +76,6 @@
         if ($_POST) {
             try {
                 //posted values
-                //empty username
-                if (empty($username)) {
-                    echo "<div class='alert alert-danger'>Username is empty.</div><br>";
-                    $flag = true;
-                } else {
-                    $username = htmlspecialchars(strip_tags($_POST['username']));
-                    if (strlen($username) < 6) {
-                        echo "<div class='alert alert-danger'>Username must be more than 6 characters.</div><br>";
-                        $flag = true;
-                    }
-                }
 
                 //if 3 section is not empty, then do checking
                 if (!empty($_POST['old_password']) && !empty($_POST['new_password']) && !empty($_POST['confirm_password'])) {
@@ -148,12 +137,11 @@
                 // it is better to label them and not use question marks
                 if ($flag == false) {
                     $query = "UPDATE customers
-                    SET username=:username, password=:password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth  WHERE customer_id=:customer_id";
+                    SET password=:password, first_name=:first_name, last_name=:last_name, gender=:gender, date_of_birth=:date_of_birth  WHERE customer_id=:customer_id";
                     // prepare query for excecution
                     $stmt = $con->prepare($query);
                     // bind the parameters
                     $stmt->bindParam(':customer_id', $customer_id);
-                    $stmt->bindParam(':username', $username);
                     $stmt->bindParam(':password', $password);
                     $stmt->bindParam(':first_name', $first_name);
                     $stmt->bindParam(':last_name', $last_name);
@@ -179,7 +167,8 @@
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Username</td>
-                    <td><input type='text' name='username' value="<?php echo htmlspecialchars($username, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
+                </tr>
                 </tr>
                 <tr>
                     <td>Old password</td>

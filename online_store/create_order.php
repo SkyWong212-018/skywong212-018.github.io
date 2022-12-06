@@ -40,72 +40,82 @@ include 'session.php';
                     $product = $_POST["product"];
                     $quantity = $_POST["quantity"];
 
-                    if ($flag == false) {
-                        $total_amount = 0;
-
-                        // can do 3 product in 1 'for loop'
-                        //calculate total amount of 3 product
-                        for ($x = 0; $x < 3; $x++) {
-
-                            $query = "SELECT price, promotion_price FROM products WHERE id = :id";
-                            $stmt = $con->prepare($query);
-                            $stmt->bindParam(':id', $product[$x]);
-                            $stmt->execute();
-                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                            //if promotion_price = 0, show 'price', else show 'promotion price'
-                            if ($row['promotion_price'] == 0) {
-                                $price = $row['price'];
-                            } else {
-                                $price = $row['promotion_price'];
-                            }
-
-                            //combine prvious total_amount (total_amount = 0) with new ones
-                            $total_amount = $total_amount + ($price * $quantity[$x]);
-                        }
-
-                        //send data to 'order_summary'
-                        $order_date = date('Y-m-d');
-                        $query = "INSERT INTO order_summary SET customer_id=:customer_id, order_date=:order_date, total_amount=:total_amount";
-                        $stmt = $con->prepare($query);
-                        $stmt->bindParam(':customer_id', $customer_id);
-                        $stmt->bindParam(':order_date', $order_date);
-                        $stmt->bindParam(':total_amount', $total_amount);
-                        if ($stmt->execute()) {
-                            echo "<div class='alert alert-success'>Create order successful.</div>";
-                            //if success > insert 'order_id' put into 'order_details' table
-                            $order_id = $con->lastInsertId();
-
-                            //calculate 'price each'
-                            for ($x = 0; $x < 3; $x++) {
-                                $query = "SELECT price, promotion_price FROM products WHERE id = :id";
-                                $stmt = $con->prepare($query);
-                                $stmt->bindParam(':id', $product[$x]);
-                                $stmt->execute();
-                                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                                if ($row['promotion_price'] == 0) {
-                                    $price = $row['price'];
-                                } else {
-                                    $price = $row['promotion_price'];
-                                }
-                                $price_each = $price * $quantity[$x];
-
-                                //send data to 'order_details'
-                                $query = "INSERT INTO order_details SET product_id=:product_id, quantity=:quantity,order_id=:orderid, price_each=:price_each";
-                                $stmt = $con->prepare($query);
-                                //product & quantity is array, [0,1,2]
-                                $stmt->bindParam(':product_id', $product[$x]);
-                                $stmt->bindParam(':quantity', $quantity[$x]);
-                                $stmt->bindParam(':orderid', $order_id);
-                                $stmt->bindParam(':price_each', $price_each);
-                                $stmt->execute();
-                            }
-                        } else {
-                            echo "<div class='alert alert-danger'>Create order failed.</div>";
-                        }
+                    //if 'array_unique'(count duplicate 'product') smaller than 'product', error
+                    if (count(array_unique($product)) < count($product)) {
+                        echo "<div class='alert alert-danger'>Need to select different product.</div>";
+                        $flag = true;
                     } else {
-                        echo "<div class='alert alert-danger'>Create order failed.</div>";
+                        for ($x = 0; $x < count($product); $x++) {
+                            if (!empty($product[$x]) && !empty($quantity[$x])) {
+                                if ($flag == false) {
+                                    $total_amount = 0;
+
+                                    // can do 3 product in 1 'for loop'
+                                    ////'count($product)' product里面有多少个就loop多少次
+                                    for ($x = 0; $x < count($product); $x++) {
+
+                                        $query = "SELECT price, promotion_price FROM products WHERE id = :id";
+                                        $stmt = $con->prepare($query);
+                                        $stmt->bindParam(':id', $product[$x]);
+                                        $stmt->execute();
+                                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                        //if promotion_price = 0, show 'price', else show 'promotion price'
+                                        if ($row['promotion_price'] == 0) {
+                                            $price = $row['price'];
+                                        } else {
+                                            $price = $row['promotion_price'];
+                                        }
+
+                                        //combine prvious total_amount (total_amount = 0) with new ones
+                                        $total_amount = $total_amount + ($price * $quantity[$x]);
+                                    }
+
+                                    //send data to 'order_summary'
+                                    $order_date = date('Y-m-d');
+                                    $query = "INSERT INTO order_summary SET customer_id=:customer_id, order_date=:order_date, total_amount=:total_amount";
+                                    $stmt = $con->prepare($query);
+                                    $stmt->bindParam(':customer_id', $customer_id);
+                                    $stmt->bindParam(':order_date', $order_date);
+                                    $stmt->bindParam(':total_amount', $total_amount);
+                                    if ($stmt->execute()) {
+                                        echo "<div class='alert alert-success'>Create order successful.</div>";
+                                        //if success > insert 'order_id' put into 'order_details' table
+                                        $order_id = $con->lastInsertId();
+
+                                        //calculate 'price each'
+                                        for ($x = 0; $x < count($product); $x++) {
+                                            $query = "SELECT price, promotion_price FROM products WHERE id = :id";
+                                            $stmt = $con->prepare($query);
+                                            $stmt->bindParam(':id', $product[$x]);
+                                            $stmt->execute();
+                                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                            if ($row['promotion_price'] == 0) {
+                                                $price = $row['price'];
+                                            } else {
+                                                $price = $row['promotion_price'];
+                                            }
+                                            $price_each = $price * $quantity[$x];
+
+                                            //send data to 'order_details'
+                                            $query = "INSERT INTO order_details SET product_id=:product_id, quantity=:quantity,order_id=:orderid, price_each=:price_each";
+                                            $stmt = $con->prepare($query);
+                                            //product & quantity is array, [0,1,2]
+                                            $stmt->bindParam(':product_id', $product[$x]);
+                                            $stmt->bindParam(':quantity', $quantity[$x]);
+                                            $stmt->bindParam(':orderid', $order_id);
+                                            $stmt->bindParam(':price_each', $price_each);
+                                            $stmt->execute();
+                                        }
+                                    } else {
+                                        echo "<div class='alert alert-danger'>Create order failed.</div>";
+                                    }
+                                } else {
+                                    echo "<div class='alert alert-danger'>Create order failed.</div>";
+                                }
+                            }
+                        }
                     }
                 } ?>
 
@@ -172,7 +182,7 @@ include 'session.php';
                         <?php } ?>
 
                     </table>
-                    <input type="submit" class="btn btn-primary" />
+                    <input type="submit" class="btn btn-success" />
                 </form>
 
             </div> <!-- end .container -->
