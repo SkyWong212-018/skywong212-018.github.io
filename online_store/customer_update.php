@@ -31,7 +31,6 @@
             <h1>Update Customer</h1>
         </div>
         <?php
-        $flag = false;
         //include database connection
         include 'config/database.php';
         // get passed parameter value, in this case, the record ID
@@ -72,20 +71,24 @@
         ?>
 
         <?php
+        $flag = false;
         // check if form was submitted
         if ($_POST) {
             try {
                 //posted values
+                echo md5($_POST['old_password']);
+                echo '</br>';
+                echo $password;
 
                 //if 3 section is not empty, then do checking
-                if (!empty($_POST['old_password']) && !empty($_POST['new_password']) && !empty($_POST['confirm_password'])) {
+                if (!empty($_POST['old_password']) or !empty($_POST['password']) or !empty($_POST['confirm_password'])) {
                     //confirm old password is same with previous password that user set, same = proceed, diff = error
                     if (md5($_POST['old_password']) == $password) {
                         //if new password diff with old password can proceed, same = error
-                        if (!md5($_POST['new_password']) == md5($_POST['old_password'])) {
+                        if (!(md5($_POST['password']) == md5($_POST['old_password']))) {
                             //if confirm password same with new password can proceed, diff = error
-                            if (md5($_POST['confirm_password']) == md5($_POST['new_password'])) {
-                                $password = md5($new_password);
+                            if (md5($_POST['confirm_password']) == md5($_POST['password'])) {
+                                $password = md5($_POST['password']);
                             } else {
                                 echo "<div class='alert alert-danger'>Confirm password is not match with new password.</div>";
                                 $flag = true;
