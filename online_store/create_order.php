@@ -42,7 +42,6 @@ include 'session.php';
                     $value = array_count_values($product);
                     $quantity = $_POST["quantity"];
 
-
                     // var_dump($product);
                     // echo "<br>";
                     // var_dump($quantity);
@@ -52,10 +51,12 @@ include 'session.php';
                     //if 3 product slot is empty print error message
                     if ($product[0] == "" && $product[1] == "" && $product[2] == "") {
                         echo "<div class='alert alert-danger'>Choose at least one product.</div>";
+                        $flag = true;
                     } else {
                         //if choose product and no select quantity print error message
                         if ((!empty($product[0]) && empty($quantity[0])) or (!empty($product[1]) && empty($quantity[1])) or (!empty($product[2]) && empty($quantity[2]))) {
                             echo "<div class='alert alert-danger'>Quantity is empty.</div>";
+                            $flag = true;
                         } else {
                             for ($x = 0; $x < count($product); $x++) {
                                 //if choose product & quantity, proceed, else print error message
@@ -84,12 +85,15 @@ include 'session.php';
                                                 $stmt->execute();
                                             } else {
                                                 echo "<div class='alert alert-danger'>Create order failed.</div>";
+                                                $flag = true;
                                             }
                                         } else {
                                             echo "<div class='alert alert-danger'>Create order failed.</div>";
+                                            $flag = true;
                                         }
                                     } else {
                                         echo "<div class='alert alert-danger'>Cannot select same product.</div>";
+                                        $flag = true;
                                     }
                                 }
                             }
