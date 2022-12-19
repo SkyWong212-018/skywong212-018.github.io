@@ -65,19 +65,21 @@ include 'session.php';
                             $stmt = $con->prepare($query);
                             $stmt->bindParam(':id', $product[$x]);
                             $stmt->execute();
-                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                            $num = $stmt->rowCount();
 
                             //if database pro price is 0/no promo, price = row price
-                            if ($row['promotion_price'] == 0) {
-                                $price = $row['price'];
-                            } else {
-                                $price = $row['promotion_price'];
+                            if ($num > 0) {
+                                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                                if ($row['promotion_price'] == 0) {
+                                    $price = $row['price'];
+                                } else {
+                                    $price = $row['promotion_price'];
+                                }
                             }
 
                             //combine prvious total_amount with new ones, loop (3 times)
                             $total_amount = $total_amount + ((float)$price * (int)$quantity[$x]);
                         }
-                        echo $total_amount;
 
                         $order_date = date('Y-m-d');
                         $query = "INSERT INTO order_summary SET customer_id=:customer_id, order_date=:order_date, total_amount=:total_amount";
@@ -88,13 +90,31 @@ include 'session.php';
                         if ($stmt->execute()) {
                             $order_id = $con->lastInsertId();
                             for ($x = 0; $x < count($product); $x++) {
+
+                                $query = "SELECT price, promotion_price FROM products WHERE id = :id";
+                                $stmt = $con->prepare($query);
+                                //bind user choose product(id) with order details product id
+                                $stmt->bindParam(':id', $product[$x]);
+                                $stmt->execute();
+                                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                                $num = $stmt->rowCount();
+                                if ($num > 0) {
+                                    if ($row['promotion_price'] == 0) {
+                                        $price = $row['price'];
+                                    } else {
+                                        $price = $row['promotion_price'];
+                                    }
+                                }
+                                $price_each = ((float)$price * (int)$quantity[$x]);
+
                                 //send data to 'order_details'
-                                $query = "INSERT INTO order_details SET product_id=:product_id, quantity=:quantity,order_id=:order_id";
+                                $query = "INSERT INTO order_details SET product_id=:product_id, quantity=:quantity,order_id=:order_id, price_each=:price_each";
                                 $stmt = $con->prepare($query);
                                 //product & quantity is array, [0,1,2]
                                 $stmt->bindParam(':product_id', $product[$x]);
                                 $stmt->bindParam(':quantity', $quantity[$x]);
                                 $stmt->bindParam(':order_id', $order_id);
+                                $stmt->bindParam(':price_each', $price_each);
                                 $stmt->execute();
                             }
                             echo "<div class='alert alert-success'>Create order successful.</div>";

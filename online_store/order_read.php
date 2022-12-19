@@ -72,7 +72,7 @@
                 // creating new table row per record
                 echo "<tr>";
                 echo "<td>{$order_id}</td>";
-                echo "<td>{$total_amount}</td>";
+                echo "<td>RM {$total_amount}</td>";
                 echo "<td>{$customer_id}</td>";
                 echo "<td>{$order_date}</td>";
                 echo "<td>";
@@ -106,7 +106,7 @@
             if (answer) {
                 // if user clicked ok,
                 // pass the id to delete.php and execute the delete query 
-                window.location = 'customer_delete.php?order_id=' + order_id;
+                window.location = 'order_delete.php?order_id=' + order_id;
             }
         }
     </script>

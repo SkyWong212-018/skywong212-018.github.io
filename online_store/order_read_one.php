@@ -28,7 +28,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT order_details_id, order_id, product_id, quantity FROM order_details WHERE order_id = ? LIMIT 0,1";
+            $query = "SELECT order_details_id, order_id, product_id, quantity, price_each FROM order_details WHERE order_id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -45,6 +45,7 @@
             $order_id = $row['order_id'];
             $product_id = $row['product_id'];
             $quantity = $row['quantity'];
+            $price_each = $row['price_each'];
         }
 
         // show error
@@ -72,6 +73,10 @@
             <tr>
                 <td>Quantity</td>
                 <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Price Each</td>
+                <td><?php echo htmlspecialchars($price_each, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td></td>
