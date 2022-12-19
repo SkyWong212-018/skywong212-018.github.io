@@ -76,7 +76,7 @@
             </tr>
             <tr>
                 <td>Price Each</td>
-                <td><?php echo htmlspecialchars($price_each, ENT_QUOTES);  ?></td>
+                <td><?php echo "RM "; ?><?php echo htmlspecialchars($price_each, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td></td>
