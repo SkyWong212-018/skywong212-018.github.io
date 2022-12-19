@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Read Customer</title>
+    <title>Read Order Summary</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <style>
@@ -22,7 +22,7 @@
     <!-- container -->
     <div class="container">
         <div class="page-header">
-            <h1>Read Customers</h1>
+            <h1>Read Order Summary</h1>
         </div>
 
         <!-- PHP code to read records will be here -->
@@ -40,7 +40,7 @@
         }
 
         // select all data
-        $query = "SELECT customer_id ,username, password, first_name, last_name, gender, date_of_birth FROM customers ORDER BY customer_id DESC";
+        $query = "SELECT order_id , customer_id, order_date, total_amount FROM order_summary ORDER BY order_id DESC";
         $stmt = $con->prepare($query);
         $stmt->execute();
 
@@ -48,7 +48,7 @@
         $num = $stmt->rowCount();
 
         // link to create record form
-        echo "<a href='create_customer.php' class='btn btn-primary m-b-1em mb-2'>Create New Customer</a>";
+        echo "<a href='create_order.php' class='btn btn-primary m-b-1em mb-2'>Create New Order</a>";
 
         //check if more than 0 record found
         if ($num > 0) {
@@ -58,39 +58,29 @@
 
             //creating our table heading
             echo "<tr>";
+            echo "<th>Order ID</th>";
+            echo "<th>Total Amount</th>";
             echo "<th>Customer ID</th>";
-            echo "<th>Username</th>";
-            echo "<th>Password</th>";
-            echo "<th>First name</th>";
-            echo "<th>Last name</th>";
-            echo "<th>Gender</th>";
-            echo "<th>Date of birth</th>";
+            echo "<th>Order Date</th>";
             echo "</tr>";
 
             // table body will be here
             // retrieve our table contents
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 // extract row
-                // this will make $row['firstname'] to just $firstname only
                 extract($row);
                 // creating new table row per record
                 echo "<tr>";
+                echo "<td>{$order_id}</td>";
+                echo "<td>{$total_amount}</td>";
                 echo "<td>{$customer_id}</td>";
-                echo "<td>{$username}</td>";
-                echo "<td>{$password}</td>";
-                echo "<td>{$first_name}</td>";
-                echo "<td>{$last_name}</td>";
-                echo "<td>{$gender}</td>";
-                echo "<td>{$date_of_birth}</td>";
+                echo "<td>{$order_date}</td>";
                 echo "<td>";
                 // read one record
-                echo "<a href='customer_read_one.php?customer_id={$customer_id}' class='btn btn-info m-r-1em'>Read</a>";
+                echo "<a href='order_read_one.php?order_id={$order_id}' class='btn btn-info m-r-1em'>Read</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='customer_update.php?customer_id={$customer_id}' class='btn btn-primary m-r-1em'>Edit</a>";
-
-                // we will use this links on next part of this post
-                echo "<a href='#' onclick='delete_user({$customer_id});'  class='btn btn-danger'>Delete</a>";
+                echo "<a href='#' onclick='delete_user({$order_id});'  class='btn btn-danger'>Delete</a>";
                 echo "</td>";
                 echo "</tr>";
             }
@@ -110,13 +100,13 @@
     <!-- confirm delete record will be here -->
     <script type='text/javascript'>
         // confirm record deletion
-        function delete_user(customer_id) {
+        function delete_user(order_id) {
             var answer = confirm('Are you sure?');
 
             if (answer) {
                 // if user clicked ok,
                 // pass the id to delete.php and execute the delete query 
-                window.location = 'customer_delete.php?customer_id=' + customer_id;
+                window.location = 'customer_delete.php?order_id=' + order_id;
             }
         }
     </script>

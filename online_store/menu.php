@@ -24,6 +24,9 @@
                     <a class="nav-link" href="http://localhost/webdev/online_store/create_order.php">Create Order</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="http://localhost/webdev/online_store/order_read.php">Read Order</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="http://localhost/webdev/online_store/contact_us.php">Contact Us</a>
                 </li>
                 <td>

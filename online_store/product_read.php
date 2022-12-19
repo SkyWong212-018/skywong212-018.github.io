@@ -110,8 +110,7 @@
             if (answer) {
                 // if user clicked ok,
                 // pass the id to delete.php and execute the delete query
-                window.location =
-                    'product_delete.php?id=' + id;
+                window.location = 'product_delete.php?id=' + id;
             }
         }
     </script>
