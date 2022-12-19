@@ -38,6 +38,10 @@
             echo "<div class='alert alert-success'>Record was deleted.</div>";
         }
 
+        if ($action == 'failed') {
+            echo "<div class='alert alert-danger'>Record cannot be delete.</div>";
+        }
+
         // select all data
         $query = "SELECT id, name, description, price FROM products ORDER BY id DESC";
         $stmt = $con->prepare($query);

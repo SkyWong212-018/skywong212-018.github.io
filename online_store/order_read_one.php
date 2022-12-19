@@ -54,32 +54,28 @@
         }
         ?>
 
-
         <!-- HTML read one record table will be here -->
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
+            <thead>
+                <tr>
+                    <th scope="col">Order Detail ID</th>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">Product ID</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price Each</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><?php echo htmlspecialchars($order_details_id, ENT_QUOTES);  ?></td>
+                    <td><?php echo htmlspecialchars($order_id, ENT_QUOTES);  ?></td>
+                    <td><?php echo htmlspecialchars($product_id, ENT_QUOTES);  ?></td>
+                    <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
+                    <td><?php echo "RM "; ?><?php echo htmlspecialchars($price_each, ENT_QUOTES);  ?></td>
+                </tr>
+            </tbody>
             <tr>
-                <td>Order Detail ID</td>
-                <td><?php echo htmlspecialchars($order_details_id, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Order ID</td>
-                <td><?php echo htmlspecialchars($order_id, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Product ID</td>
-                <td><?php echo htmlspecialchars($product_id, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Quantity</td>
-                <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Price Each</td>
-                <td><?php echo "RM "; ?><?php echo htmlspecialchars($price_each, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td></td>
                 <td>
                     <a href='order_read.php' class='btn btn-danger'>Back to read order summary</a>
                 </td>
