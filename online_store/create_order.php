@@ -16,14 +16,15 @@ include 'session.php';
     <?php
     include 'menu.php';
     include 'config/database.php';
+    date_default_timezone_set("Asia/Kuala_Lumpur");
     ?>
 
     <!-- container -->
     <div class="container">
         <div class="row fluid">
             <div class="col-md-10">
-                <div class="page-header top_text mt-5 mb-3">
-                    <h2>Create Order</h2>
+                <div class="page-header top_text mt-3 mb-3">
+                    <h1>Create Order</h1>
                 </div>
 
                 <?php
@@ -71,7 +72,7 @@ include 'session.php';
 
                     if (empty($error_msg)) {
                         $total_amount = 0;
-                        for ($x = 0; $x < 3; $x++) {
+                        for ($x = 0; $x < count($product); $x++) {
                             $query = "SELECT price, promotion_price FROM products WHERE id = :id";
                             $stmt = $con->prepare($query);
                             $stmt->bindParam(':id', $product[$x]);
@@ -93,7 +94,7 @@ include 'session.php';
                             $total_amount = $total_amount + ((float)$price * (int)$quantity[$x]);
                         }
 
-                        $order_date = date('Y-m-d');
+                        $order_date = date('Y-m-d H:i:s');
                         $query = "INSERT INTO order_summary SET customer_id=:customer_id, order_date=:order_date, total_amount=:total_amount";
                         $stmt = $con->prepare($query);
                         $stmt->bindParam(':customer_id', $customer_id);
@@ -147,7 +148,7 @@ include 'session.php';
                     $num = $stmt->rowCount();
                     ?>
 
-                    <table class='table table-hover table-responsive table-bordered mb-5'>
+                    <table class='table table-hover table-responsive table-bordered'>
                         <div class="row">
                             <label class="order-form-label">Username</label>
                         </div>
@@ -175,60 +176,73 @@ include 'session.php';
                         $num = $stmt->rowCount();
                         ?>
 
-                        <div class="row">
-                            <label class="order-form-label">Product</label>
-                            <div class="pRow">
-                                <div class="col-3 mb-2 mt-2">
-                                    <span class="error"></span>
-                                    <select class="form-select" name="product[]" aria-label="form-select-lg example">
-                                        <option value='' selected>- Product -</option>
-                                        <?php
-                                        if ($num > 0) {
+                        <div class="pRow">
+                            <div class="row">
+                                <div class="col-8 mb-2 ">
+                                    <label class="order-form-label">Products</label>
+                                </div>
+
+                                <div class="col-4 mb-2">
+                                </div>
+                                <div class="col-8 mb-2">
+                                    <select class="form-select  mb-3" id="" name="product[]" aria-label="form-select-lg example">
+                                        <option value='' selected>Choose your product </option>
+
+                                        <?php if ($num > 0) {
                                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                                 extract($row); ?>
-                                                <option value="<?php echo $id; ?>"><?php echo htmlspecialchars($name, ENT_QUOTES);
-                                                                                    if ($promotion_price == 0) {
-                                                                                        echo " (RM$price)";
-                                                                                    } else {
-                                                                                        echo " (RM$promotion_price)";
-                                                                                    } ?></option>
+                                                <option value="<?php echo $id; ?>">
+                                                    <?php echo htmlspecialchars($name, ENT_QUOTES);
+                                                    if ($promotion_price == 0) {
+                                                        echo " (RM$price)";
+                                                    } else {
+                                                        echo " (RM$promotion_price)";
+                                                    } ?>
+
+                                                </option>
                                         <?php }
                                         }
                                         ?>
 
                                     </select>
+
                                 </div>
 
-                                <input class="col-3 mb-2 mt-2" type="number" id="quantity[]" name="quantity[]" min=1>
+                                <div class="col-4 mb-3">
+                                    <input type='number' id='quantity[]' name='quantity[]' class='form-control' min=1 />
+                                </div>
                             </div>
                         </div>
-                        <input type="button" value="Add More" class="add_one btn btn-info mt-2 me-2" />
-                        <input type="button" value="Delete" class="delete_one btn btn-danger mt-2" />
-                    </table>
+                        <div class="col-12 mb-2">
+                            <input type="button" value="Add More" class="add_one btn btn-outline-primary" />
+                            <input type="button" value="Delete" class="delete_one btn btn-outline-danger" />
+                        </div>
+            </div>
+            </table>
+            <hr>
+            <input type="submit" class="btn btn-primary" /></th>
+            </form>
 
-                    <input type="submit" class="btn btn-primary" />
-                </form>
+        </div> <!-- end .container -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
-            </div> <!-- end .container -->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
-            <script>
-                document.addEventListener('click', function(event) {
-                    if (event.target.matches('.add_one')) {
+        <script>
+            document.addEventListener('click', function(event) {
+                if (event.target.matches('.add_one')) {
+                    var element = document.querySelector('.pRow');
+                    var clone = element.cloneNode(true);
+                    element.after(clone);
+                }
+                if (event.target.matches('.delete_one')) {
+                    var total = document.querySelectorAll('.pRow').length;
+                    if (total > 1) {
                         var element = document.querySelector('.pRow');
-                        var clone = element.cloneNode(true);
-                        element.after(clone);
+                        element.remove(element);
                     }
-                    if (event.target.matches('.delete_one')) {
-                        var total = document.querySelectorAll('.pRow').length;
-                        if (total > 1) {
-                            var element = document.querySelector('.pRow');
-                            element.remove(element);
-                        }
-                    }
-                }, false);
-            </script>
-            <!-- confirm delete record will be here -->
+                }
+            }, false);
+        </script>
+        <!-- confirm delete record will be here -->
 
 </body>
 
