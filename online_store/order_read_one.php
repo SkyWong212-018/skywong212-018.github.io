@@ -28,7 +28,28 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT order_details_id, order_id, product_id, quantity, price_each FROM order_details WHERE order_id = ? LIMIT 0,1";
+            $query = "SELECT p.name, o.order_details_id, o.order_id, o.product_id, o.quantity, o.price_each FROM order_details o INNER JOIN products p ON p.id = o.product_id";
+            $stmt = $con->prepare($query);
+
+            // this is the first question mark
+            $stmt->bindParam(1, $order_id);
+
+            // execute our query
+            $stmt->execute();
+
+            // store retrieved row to a variable
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // values to fill up our form\
+            $order_details_id = $row['order_details_id'];
+            $order_id = $row['order_id'];
+            $product_id = $row['product_id'];
+            $name = $row['name'];
+            $quantity = $row['quantity'];
+            $price_each = $row['price_each'];
+
+            //get total amount
+            $query = "SELECT total_amount FROM order_summary";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -41,11 +62,7 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // values to fill up our form
-            $order_details_id = $row['order_details_id'];
-            $order_id = $row['order_id'];
-            $product_id = $row['product_id'];
-            $quantity = $row['quantity'];
-            $price_each = $row['price_each'];
+            $total_amount = $row['total_amount'];
         }
 
         // show error
@@ -62,8 +79,9 @@
                     <th scope="col">Order Detail ID</th>
                     <th scope="col">Order ID</th>
                     <th scope="col">Product ID</th>
+                    <th scope="col">Product Name</th>
                     <th scope="col">Quantity</th>
-                    <th scope="col">Price Each</th>
+                    <th scope="col">Price Each (RM)</th>
                 </tr>
             </thead>
             <tbody>
@@ -71,16 +89,25 @@
                     <td><?php echo htmlspecialchars($order_details_id, ENT_QUOTES);  ?></td>
                     <td><?php echo htmlspecialchars($order_id, ENT_QUOTES);  ?></td>
                     <td><?php echo htmlspecialchars($product_id, ENT_QUOTES);  ?></td>
+                    <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
                     <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
-                    <td><?php echo "RM "; ?><?php echo htmlspecialchars($price_each, ENT_QUOTES);  ?></td>
+                    <td><?php echo number_format((float)$price_each, 2, '.', '') ?> </td>
                 </tr>
             </tbody>
-            <tr>
-                <td>
-                    <a href='order_read.php' class='btn btn-danger'>Back to read order summary</a>
-                </td>
-            </tr>
         </table>
+        <tr>
+            <td>
+                <h3>Total Amount: <?php echo htmlspecialchars($total_amount, ENT_QUOTES);  ?></h3>
+            </td>
+            <td></td>
+        </tr>
+        <hr>
+        <tr>
+            <td>
+                <br>
+                <a href='order_read.php' class='btn btn-danger'>Back to read order summary</a>
+            </td>
+        </tr>
 
     </div> <!-- end .container -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
