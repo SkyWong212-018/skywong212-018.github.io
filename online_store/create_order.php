@@ -132,7 +132,7 @@ include 'session.php';
                                 $stmt->bindParam(':price_each', $price_each);
                                 $stmt->execute();
                             }
-                            echo "<div class='alert alert-success'>Create order successful.</div>";
+                            header("Location: http://localhost/webdev/online_store/order_read.php?action=successful");
                         }
                     } else {
                         echo "<div class='alert alert-danger'>$error_msg</div>";

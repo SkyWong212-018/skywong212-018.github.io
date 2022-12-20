@@ -28,7 +28,13 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT p.name, o.order_details_id, o.order_id, o.product_id, o.quantity, o.price_each FROM order_details o INNER JOIN products p ON p.id = o.product_id";
+            $query = "SELECT order_details_id, o.order_id, product_id, p.name, price, promotion_price, quantity, price_each, total_amount
+            FROM order_details o 
+            INNER JOIN products p 
+            ON o.product_id = p.id
+            INNER JOIN order_summary s
+            ON o.order_id = s.order_id
+            WHERE o.order_id = ?";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -37,32 +43,8 @@
             // execute our query
             $stmt->execute();
 
-            // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // values to fill up our form\
-            $order_details_id = $row['order_details_id'];
-            $order_id = $row['order_id'];
-            $product_id = $row['product_id'];
-            $name = $row['name'];
-            $quantity = $row['quantity'];
-            $price_each = $row['price_each'];
-
-            //get total amount
-            $query = "SELECT total_amount FROM order_summary";
-            $stmt = $con->prepare($query);
-
-            // this is the first question mark
-            $stmt->bindParam(1, $order_id);
-
-            // execute our query
-            $stmt->execute();
-
-            // store retrieved row to a variable
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // values to fill up our form
-            $total_amount = $row['total_amount'];
+            // this is how to get number of rows returned
+            $num = $stmt->rowCount();
         }
 
         // show error
@@ -80,28 +62,44 @@
                     <th scope="col">Order ID</th>
                     <th scope="col">Product ID</th>
                     <th scope="col">Product Name</th>
+                    <th scope="col">Price (/unit) (RM)</th>
+                    <th scope="col">Promotion Price (RM)</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Price Each (RM)</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><?php echo htmlspecialchars($order_details_id, ENT_QUOTES);  ?></td>
-                    <td><?php echo htmlspecialchars($order_id, ENT_QUOTES);  ?></td>
-                    <td><?php echo htmlspecialchars($product_id, ENT_QUOTES);  ?></td>
-                    <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
-                    <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
-                    <td><?php echo number_format((float)$price_each, 2, '.', '') ?> </td>
-                </tr>
+                <?php
+                if ($num > 0) {
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        extract($row); ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($order_details_id, ENT_QUOTES);  ?></td>
+                            <td><?php echo htmlspecialchars($order_id, ENT_QUOTES);  ?></td>
+                            <td><?php echo htmlspecialchars($product_id, ENT_QUOTES);  ?></td>
+                            <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
+                            <td><?php echo number_format((float)$price, 2, '.', '') ?> </td>
+                            <td><?php echo number_format((float)$promotion_price, 2, '.', '') ?> </td>
+                            <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
+                            <td><?php echo number_format((float)$price_each, 2, '.', '') ?> </td>
+                        </tr>
+                <?php }
+                } ?>
+                <div>
+                    <tr>
+                        <th scope="row">
+                            <h3>Total Amount</h3>
+                        </th>
+                        <td colspan="6"></td>
+                        <td>
+                            <h3>
+                                <?php echo htmlspecialchars("RM$total_amount", ENT_QUOTES); ?>
+                            </h3>
+                        </td>
+                    </tr>
+                </div>
             </tbody>
         </table>
-        <tr>
-            <td>
-                <h3>Total Amount: <?php echo htmlspecialchars($total_amount, ENT_QUOTES);  ?></h3>
-            </td>
-            <td></td>
-        </tr>
-        <hr>
         <tr>
             <td>
                 <br>

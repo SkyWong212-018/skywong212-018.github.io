@@ -39,6 +39,10 @@
             echo "<div class='alert alert-success'>Record was deleted.</div>";
         }
 
+        if ($action == 'successful') {
+            echo "<div class='alert alert-success'>Order was created successful.</div>";
+        }
+
         // select all data
         $query = "SELECT c.first_name, c.last_name ,o.order_id , o.customer_id, o.order_date, o.total_amount FROM order_summary o INNER JOIN customers c ON c.customer_id = o.customer_id ORDER BY order_id DESC";
         $stmt = $con->prepare($query);

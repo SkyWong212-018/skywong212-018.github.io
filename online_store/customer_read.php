@@ -43,6 +43,10 @@
             echo "<div class='alert alert-danger'>Record cannot be delete.</div>";
         }
 
+        if ($action == 'success') {
+            echo "<div class='alert alert-success'>Customer created successful.</div>";
+        }
+
         // select all data
         $query = "SELECT customer_id ,username, password, first_name, last_name, gender, date_of_birth FROM customers ORDER BY customer_id DESC";
         $stmt = $con->prepare($query);

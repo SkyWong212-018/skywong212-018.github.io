@@ -34,6 +34,10 @@
         $action = isset($_GET['action']) ?
             $_GET['action'] : "";
         // if it was redirected from delete.php
+        if ($action == 'successful') {
+            echo "<div class='alert alert-success'>Product created successful.</div>";
+        }
+
         if ($action == 'deleted') {
             echo "<div class='alert alert-success'>Record was deleted.</div>";
         }
