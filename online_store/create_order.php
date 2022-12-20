@@ -46,19 +46,30 @@ include 'session.php';
                         $error_msg .= "<div class='alert alert-danger'>Need to select customer.</div>";
                     }
 
+                    if ($product[0] == "") {
+                        $error_msg .= "<div class='alert alert-danger'>Please at least choose a product.</div>";
+                    }
+
                     //if 3 product slot is empty print error message
                     for ($x = 0; $x < count($product); $x++) {
-                        if ($product[$x] == "" && $quantity[$x] == "") {
-                            $error_msg .= "<div class='alert alert-danger'>Choose product $x with quantity.</div>";
-                        }
+                        if ($x == 0) {
+                            if ($product[$x] == "" or $quantity[$x] == "") {
+                                $error_msg .= "<div class='alert alert-danger'>Choose product $x with quantity.</div>";
+                            }
+                        } else {
+                            if ($product[$x] != "") {
+                                if ($quantity[$x] == "") {
+                                    $error_msg .= "<div class='alert alert-danger'>Choose product $x with quantity.</div>";
+                                }
 
-                        //if choose product and no select quantity print error message
-                        if ($value[$product[$x]] > 1) {
-                            $error_msg .= "<div class='alert alert-danger'>Product $x is duplicated.</div>";
+                                if ($value[$product[$x]] > 1) {
+                                    $error_msg .= "<div class='alert alert-danger'>Cannot choose same product.</div>";
+                                }
+                            }
                         }
                     }
 
-                    if (empty($err_message)) {
+                    if (empty($error_msg)) {
                         $total_amount = 0;
                         for ($x = 0; $x < 3; $x++) {
                             $query = "SELECT price, promotion_price FROM products WHERE id = :id";
@@ -66,6 +77,7 @@ include 'session.php';
                             $stmt->bindParam(':id', $product[$x]);
                             $stmt->execute();
                             $num = $stmt->rowCount();
+                            $price = 0;
 
                             //if database pro price is 0/no promo, price = row price
                             if ($num > 0) {
@@ -98,6 +110,8 @@ include 'session.php';
                                 $stmt->execute();
                                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                 $num = $stmt->rowCount();
+                                $price = 0;
+
                                 if ($num > 0) {
                                     if ($row['promotion_price'] == 0) {
                                         $price = $row['price'];
@@ -155,20 +169,17 @@ include 'session.php';
                         </div>
 
                         <?php
-                        //forloop, for 3 product
-                        for ($x = 0; $x < 3; $x++) {
-                            $query = "SELECT id, name, price, promotion_price FROM products ORDER BY id DESC";
-                            $stmt = $con->prepare($query);
-                            $stmt->execute();
-                            $num = $stmt->rowCount();
+                        $query = "SELECT id, name, price, promotion_price FROM products ORDER BY id DESC";
+                        $stmt = $con->prepare($query);
+                        $stmt->execute();
+                        $num = $stmt->rowCount();
                         ?>
 
-                            <div class="row">
-                                <label class="order-form-label">Product</label>
-
+                        <div class="row">
+                            <label class="order-form-label">Product</label>
+                            <div class="pRow">
                                 <div class="col-3 mb-2 mt-2">
-                                    <span class="error"><?php //echo $userErr; 
-                                                        ?></span>
+                                    <span class="error"></span>
                                     <select class="form-select" name="product[]" aria-label="form-select-lg example">
                                         <option value='' selected>- Product -</option>
                                         <?php
@@ -188,16 +199,35 @@ include 'session.php';
                                     </select>
                                 </div>
 
-                                <input class="col-1 mb-2 mt-2" type="number" id="quantity[]" name="quantity[]" min=1>
+                                <input class="col-3 mb-2 mt-2" type="number" id="quantity[]" name="quantity[]" min=1>
                             </div>
-                        <?php } ?>
-
+                        </div>
+                        <input type="button" value="Add More" class="add_one btn btn-info mt-2 me-2" />
+                        <input type="button" value="Delete" class="delete_one btn btn-danger mt-2" />
                     </table>
-                    <input type="submit" class="btn btn-success" />
+
+                    <input type="submit" class="btn btn-primary" />
                 </form>
 
             </div> <!-- end .container -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+            <script>
+                document.addEventListener('click', function(event) {
+                    if (event.target.matches('.add_one')) {
+                        var element = document.querySelector('.pRow');
+                        var clone = element.cloneNode(true);
+                        element.after(clone);
+                    }
+                    if (event.target.matches('.delete_one')) {
+                        var total = document.querySelectorAll('.pRow').length;
+                        if (total > 1) {
+                            var element = document.querySelector('.pRow');
+                            element.remove(element);
+                        }
+                    }
+                }, false);
+            </script>
             <!-- confirm delete record will be here -->
 
 </body>

@@ -59,7 +59,7 @@
             //creating our table heading
             echo "<tr>";
             echo "<th>Order ID</th>";
-            echo "<th>Total Amount</th>";
+            echo "<th>Total Amount (RM)</th>";
             echo "<th>Customer ID</th>";
             echo "<th>Order Date</th>";
             echo "</tr>";
@@ -72,7 +72,7 @@
                 // creating new table row per record
                 echo "<tr>";
                 echo "<td>{$order_id}</td>";
-                echo "<td>RM {$total_amount}</td>";
+                echo "<td> " . number_format((float)$total_amount, 2, '.', '') . "</td>";
                 echo "<td>{$customer_id}</td>";
                 echo "<td>{$order_date}</td>";
                 echo "<td>";
