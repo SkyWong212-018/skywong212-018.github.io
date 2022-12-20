@@ -25,15 +25,6 @@
         <?php
         $flag = false;
 
-        //$_GET['action'] = action' will display in url
-        //If url have 'action'
-        if (isset($_GET['action'])) {
-            //If action = success print out 'Record was saved'
-            if ($_GET['action'] == 'success') {
-                echo "<div class='alert alert-success'>Record was saved.</div>";
-            }
-        }
-
         if ($_POST) {
             // include database connection
             include 'config/database.php';
@@ -153,7 +144,7 @@
 
                     // Execute the query
                     if ($stmt->execute()) {
-                        header("Location: http://localhost/webdev/online_store/create_customer.php?action=success");
+                        header("Location: http://localhost/webdev/online_store/customer_read.php?action=success");
                     } else {
                         echo "<div class='alert alert-danger'>Unable to save record.</div>";
                     }
