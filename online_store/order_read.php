@@ -21,7 +21,7 @@
 
     <!-- container -->
     <div class="container">
-        <div class="page-header">
+        <div class="page-header mt-3">
             <h1>Order List</h1>
         </div>
 
@@ -44,7 +44,11 @@
         }
 
         // select all data
-        $query = "SELECT c.first_name, c.last_name ,o.order_id , o.customer_id, o.order_date, o.total_amount FROM order_summary o INNER JOIN customers c ON c.customer_id = o.customer_id ORDER BY order_id DESC";
+        $query = "SELECT c.first_name, c.last_name ,o.order_id , o.customer_id, o.order_date, o.total_amount 
+        FROM order_summary o 
+        INNER JOIN customers c 
+        ON c.customer_id = o.customer_id 
+        ORDER BY order_id DESC";
         $stmt = $con->prepare($query);
         $stmt->execute();
 

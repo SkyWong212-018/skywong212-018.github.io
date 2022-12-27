@@ -17,6 +17,7 @@
     <div class="container">
         <div class="page-header">
             <h1>Read Order Details</h1>
+            <hr />
         </div>
 
         <!-- PHP read one record will be here -->
@@ -31,12 +32,14 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT p.name, price, promotion_price, quantity, price_each, total_amount
-            FROM order_details o 
+            $query = "SELECT p.name, price, promotion_price, quantity, price_each, total_amount, c.first_name, c.last_name, s.order_date
+            FROM order_details o
             INNER JOIN products p 
             ON o.product_id = p.id
             INNER JOIN order_summary s
             ON o.order_id = s.order_id
+            INNER JOIN customers c
+            ON c.customer_id = s.customer_id
             WHERE o.order_id = ?";
             $stmt = $con->prepare($query);
 
@@ -62,8 +65,8 @@
             <thead>
                 <tr>
                     <th scope="col">Product Name</th>
-                    <th scope="col">Price (/unit) (RM)</th>
-                    <th scope="col">Promotion Price (RM)</th>
+                    <th scope="col">Orginal Price (/unit) (RM)</th>
+                    <th scope="col">Promotion Price (/unit) (RM)</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Price Each (RM)</th>
                 </tr>
@@ -93,6 +96,8 @@
                             </td>
                         </tr>
                 <?php }
+                    echo "<h5 primary > Customer Name: $first_name $last_name </h5>";
+                    echo "<h5 primary > Order Date: $order_date </h5>";
                 } ?>
                 <div>
                     <tr>

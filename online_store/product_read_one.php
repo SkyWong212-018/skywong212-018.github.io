@@ -71,11 +71,11 @@
                 <td><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>Price</td>
+                <td>Price (RM)</td>
                 <td><?php echo htmlspecialchars($price, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>Promotion Price</td>
+                <td>Promotion Price (RM)</td>
                 <td><?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?></td>
             </tr>
             <tr>

@@ -21,7 +21,7 @@
 
     <!-- container -->
     <div class="container">
-        <div class="page-header">
+        <div class="page-header mt-3">
             <h1>Product List</h1>
         </div>
 
@@ -47,7 +47,7 @@
         }
 
         // select all data
-        $query = "SELECT id, name, description, price FROM products ORDER BY id DESC";
+        $query = "SELECT id, name, description, price, promotion_price FROM products ORDER BY id DESC";
         $stmt = $con->prepare($query);
         $stmt->execute();
 
@@ -68,7 +68,8 @@
             echo "<th>ID</th>";
             echo "<th>Name</th>";
             echo "<th>Description</th>";
-            echo "<th>Price</th>";
+            echo "<th>Price (RM)</th>";
+            echo "<th>Promotion Price (RM)</th>";
             echo "<th>Action</th>";
             echo "</tr>";
 
@@ -83,7 +84,8 @@
                 echo "<td>{$id}</td>";
                 echo "<td>{$name}</td>";
                 echo "<td>{$description}</td>";
-                echo "<td>{$price}</td>";
+                echo "<td class= \"text-end\" >" . number_format((float) $price, 2, '.', '') . "</td>";
+                echo "<td class= \"text-end\" >" . number_format((float) $promotion_price, 2, '.', '') . "</td>";
 
                 echo "<td>";
                 // read one record

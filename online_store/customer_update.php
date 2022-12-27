@@ -77,10 +77,6 @@
         if ($_POST) {
             try {
                 //posted values
-                echo md5($_POST['old_password']);
-                echo '</br>';
-                echo $password;
-
                 //if 3 section is not empty, then do checking
                 if (!empty($_POST['old_password']) or !empty($_POST['password']) or !empty($_POST['confirm_password'])) {
                     //confirm old password is same with previous password that user set, same = proceed, diff = error

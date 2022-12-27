@@ -16,7 +16,7 @@
 
     <!-- container -->
     <div class="container">
-        <div class="page-header">
+        <div class="page-header mt-3">
             <h1>Create Product</h1>
         </div>
 
@@ -46,8 +46,7 @@
                 }
 
                 if (empty($description)) {
-                    echo "<div class='alert alert-danger'>Description is empty.</div><br>";
-                    $flag = true;
+                    $description = null;
                 } else {
                     $description = $_POST["description"];
                 }
@@ -60,15 +59,12 @@
                 }
 
                 if (empty($promotion_price)) {
-                    echo "<div class='alert alert-danger'>Promotion price is empty.</div><br>";
+                    $promotion_price = null;
+                } else if (($_POST["promotion_price"]) > ($_POST["price"])) {
+                    echo "<div class='alert alert-danger'>Promotion price need to cheaper than original price.</div><br>";
                     $flag = true;
                 } else {
                     $promotion_price = $_POST["promotion_price"];
-                }
-
-                if (($_POST["promotion_price"]) > ($_POST["price"])) {
-                    echo "<div class='alert alert-danger'>Promotion price need to cheaper than original price.</div><br>";
-                    $flag = true;
                 }
 
                 if (empty($manufacture_date)) {
@@ -79,16 +75,14 @@
                 }
 
                 if (empty($expired_date)) {
-                    echo "<div class='alert alert-danger'>Expired date is empty.</div><br>";
+                    $expired_date = null;
+                } else if (($_POST["expired_date"]) < ($_POST["manufacture_date"])) {
+                    echo "<div class='alert alert-danger'>Expired date need to later than manufacture date.</div><br>";
                     $flag = true;
                 } else {
                     $expired_date = $_POST["expired_date"];
                 }
 
-                if (($_POST["expired_date"]) < ($_POST["manufacture_date"])) {
-                    echo "<div class='alert alert-danger'>Expired date need to later than manufacture date.</div><br>";
-                    $flag = true;
-                }
                 if ($flag == false) {
                     //109-134 put all things (name, description...) into correct place
                     // insert query

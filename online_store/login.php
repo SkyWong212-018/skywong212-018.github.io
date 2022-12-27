@@ -117,6 +117,10 @@ session_start();
         } else {
             $usernameErr = "User not found *";
         }
+
+        if (empty($_POST['username'])) {
+            $usernameErr = "Username & password is required* ";
+        }
     }
     ?>
 
@@ -130,8 +134,8 @@ session_start();
                     }
                 }
                 ?>
-                <img class="mb-4" src="img/dodge.png" alt="dodge" width="72">
-                <h1 class="h2 mb-3 fw-normal"><b>E-Shop</b></h1>
+                <img class="mb-4" src="img/Logo.png" alt="dodge" width="72">
+                <h1 class="h2 mb-3 fw-normal"><b>Sky E-Shop</b></h1>
                 <h1 class="h5 mb-3 fw-normal">Please sign in</h1>
                 <?php //Error message 
                 ?>
