@@ -9,6 +9,9 @@
 </head>
 
 <body>
+    <?php
+    include 'menu.php';
+    ?>
 
     <!-- container -->
     <div class="container">
@@ -28,7 +31,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT order_details_id, o.order_id, product_id, p.name, price, promotion_price, quantity, price_each, total_amount
+            $query = "SELECT p.name, price, promotion_price, quantity, price_each, total_amount
             FROM order_details o 
             INNER JOIN products p 
             ON o.product_id = p.id
@@ -58,9 +61,6 @@
         <table class='table table-hover table-responsive table-bordered'>
             <thead>
                 <tr>
-                    <th scope="col">Order Detail ID</th>
-                    <th scope="col">Order ID</th>
-                    <th scope="col">Product ID</th>
                     <th scope="col">Product Name</th>
                     <th scope="col">Price (/unit) (RM)</th>
                     <th scope="col">Promotion Price (RM)</th>
@@ -74,27 +74,38 @@
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         extract($row); ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($order_details_id, ENT_QUOTES);  ?></td>
-                            <td><?php echo htmlspecialchars($order_id, ENT_QUOTES);  ?></td>
-                            <td><?php echo htmlspecialchars($product_id, ENT_QUOTES);  ?></td>
                             <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
-                            <td><?php echo number_format((float)$price, 2, '.', '') ?> </td>
-                            <td><?php echo number_format((float)$promotion_price, 2, '.', '') ?> </td>
+                            <td>
+                                <div class='text-end'>
+                                    <?php echo number_format((float)$price, 2, '.', '') ?>
+                                </div>
+                            </td>
+                            <td>
+                                <div class='text-end'>
+                                    <?php echo number_format((float)$promotion_price, 2, '.', '') ?>
+                                </div>
+                            </td>
                             <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
-                            <td><?php echo number_format((float)$price_each, 2, '.', '') ?> </td>
+                            <td>
+                                <div class='text-end'>
+                                    <?php echo number_format((float)$price_each, 2, '.', '') ?>
+                                </div>
+                            </td>
                         </tr>
                 <?php }
                 } ?>
                 <div>
                     <tr>
                         <th scope="row">
-                            <h3>Total Amount</h3>
+                            <h3>Total Amount (RM)</h3>
                         </th>
-                        <td colspan="6"></td>
+                        <td colspan="3"></td>
                         <td>
-                            <h3>
-                                <?php echo htmlspecialchars("RM$total_amount", ENT_QUOTES); ?>
-                            </h3>
+                            <div class='text-end'>
+                                <h3>
+                                    <?php echo number_format((float)$total_amount, 2, '.', '') ?>
+                                </h3>
+                            </div>
                         </td>
                     </tr>
                 </div>

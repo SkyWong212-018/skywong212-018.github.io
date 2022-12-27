@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Read Order Summary</title>
+    <title>Order List</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <style>
@@ -22,7 +22,7 @@
     <!-- container -->
     <div class="container">
         <div class="page-header">
-            <h1>Read Order Summary</h1>
+            <h1>Order List</h1>
         </div>
 
         <!-- PHP code to read records will be here -->
@@ -68,6 +68,7 @@
             echo "<th>First Name</th>";
             echo "<th>Last Name</th>";
             echo "<th>Order Date</th>";
+            echo "<th>Action</th>";
             echo "</tr>";
 
             // table body will be here
@@ -78,7 +79,7 @@
                 // creating new table row per record
                 echo "<tr>";
                 echo "<td>{$order_id}</td>";
-                echo "<td> " . number_format((float)$total_amount, 2, '.', '') . "</td>";
+                echo "<td> <div class = 'text-end'>"  . number_format((float)$total_amount, 2, '.', '') . "</div> </td>";
                 echo "<td>{$customer_id}</td>";
                 echo "<td>{$first_name}</td>";
                 echo "<td>{$last_name}</td>";

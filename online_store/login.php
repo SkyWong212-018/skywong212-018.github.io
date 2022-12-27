@@ -78,7 +78,7 @@ session_start();
 <body class="text-center">
     <?php
     //Set variable for Error message
-    $usernameErr =  $passwordErr = $statusErr = "";
+    $usernameErr =  $passwordErr = $statusErr = $blankErr = "";
 
     if ($_POST) {
 
@@ -131,7 +131,8 @@ session_start();
                 }
                 ?>
                 <img class="mb-4" src="img/dodge.png" alt="dodge" width="72">
-                <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+                <h1 class="h2 mb-3 fw-normal"><b>E-Shop</b></h1>
+                <h1 class="h5 mb-3 fw-normal">Please sign in</h1>
                 <?php //Error message 
                 ?>
                 <span class="error"><?php echo $usernameErr; ?></span>
@@ -158,7 +159,7 @@ session_start();
                     </label>
                 </div>
                 <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-                <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+                <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
             </form>
         </form>
     </main>

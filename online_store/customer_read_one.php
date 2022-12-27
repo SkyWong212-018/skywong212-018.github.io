@@ -9,6 +9,10 @@
 </head>
 
 <body>
+    <?php
+    include 'menu.php';
+    ?>
+
     <!-- container -->
     <div class="container">
         <div class="page-header">
@@ -28,7 +32,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT customer_id ,username, password, first_name, last_name, gender, date_of_birth FROM customers WHERE customer_id = ? LIMIT 0,1";
+            $query = "SELECT customer_id ,username, password, first_name, last_name, gender, date_of_birth, registration FROM customers WHERE customer_id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -49,6 +53,7 @@
                 $last_name = $row['last_name'];
                 $gender = $row['gender'];
                 $date_of_birth = $row['date_of_birth'];
+                $registration = $row['registration'];
             }
         }
 
@@ -74,14 +79,21 @@
                 <td>First Name</td>
                 <td><?php echo htmlspecialchars($first_name, ENT_QUOTES);  ?></td>
             </tr>
-            <td>Last Name</td>
-            <td><?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?></td>
+            <tr>
+                <td>Last Name</td>
+                <td><?php echo htmlspecialchars($last_name, ENT_QUOTES);  ?></td>
             </tr>
-            <td>Gender</td>
-            <td><?php echo htmlspecialchars($gender, ENT_QUOTES);  ?></td>
+            <tr>
+                <td>Gender</td>
+                <td><?php echo htmlspecialchars($gender, ENT_QUOTES);  ?></td>
             </tr>
-            <td>Date of birth</td>
-            <td><?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?></td>
+            <tr>
+                <td>Date of birth</td>
+                <td><?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Registration Date</td>
+                <td><?php echo htmlspecialchars($registration, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td></td>

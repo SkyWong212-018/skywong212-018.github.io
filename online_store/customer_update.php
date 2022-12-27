@@ -40,7 +40,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT customer_id, username, password, first_name, last_name, gender, date_of_birth FROM customers WHERE customer_id = ? LIMIT 0,1";
+            $query = "SELECT customer_id, username, password, first_name, last_name, gender, date_of_birth, registration FROM customers WHERE customer_id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -61,6 +61,7 @@
                 $last_name = $row['last_name'];
                 $gender = $row['gender'];
                 $date_of_birth = $row['date_of_birth'];
+                $registration = $row['registration'];
             }
         }
 
@@ -212,6 +213,10 @@
                     <td>Date of birth</td>
                     <td><input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" />
                     </td>
+                </tr>
+                <tr>
+                    <td>Registration Date</td>
+                    <td><?php echo htmlspecialchars($registration, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
                     <td></td>

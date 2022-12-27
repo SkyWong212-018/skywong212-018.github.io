@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Read Customer</title>
+    <title>Customer List</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <style>
@@ -22,7 +22,7 @@
     <!-- container -->
     <div class="container">
         <div class="page-header">
-            <h1>Read Customers</h1>
+            <h1>Customer List</h1>
         </div>
 
         <!-- PHP code to read records will be here -->
@@ -62,7 +62,7 @@
         if ($num > 0) {
 
             // data from database will be here
-            echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
+            echo "<table class='table table-responsive table-responsive table-bordered'>"; //start table
 
             //creating our table heading
             echo "<tr>";
@@ -73,6 +73,7 @@
             echo "<th>Last name</th>";
             echo "<th>Gender</th>";
             echo "<th>Date of birth</th>";
+            echo "<th>Action</th>";
             echo "</tr>";
 
             // table body will be here
