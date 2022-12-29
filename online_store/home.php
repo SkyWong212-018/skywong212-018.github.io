@@ -88,10 +88,10 @@
                 $total_amount = $row['total_amount'];
                 ?>
 
-                <h3><?php echo "Username: $username" ?></h3>
-                <h3><?php echo "Customer Name: $first_name $last_name" ?></h3>
-                <h3><?php echo "Total Amount: RM $total_amount" ?></h3>
-                <h3><?php echo "Transaction Date: $order_date" ?></h3>
+                <h3 class="lead"><?php echo "Username: $username" ?></h3>
+                <h3 class="lead"><?php echo "Customer Name: $first_name $last_name" ?></h3>
+                <h3 class="lead"><?php echo "Total Amount: RM $total_amount" ?></h3>
+                <h3 class="lead"><?php echo "Transaction Date: $order_date" ?></h3>
                 <a href="http://localhost/webdev/online_store/order_read.php" class="btn btn-primary col-1 mt-2 mb-4">Order List</a>
             </li>
         </ul>
@@ -138,7 +138,7 @@
             <div class="card-body">
                 <h5 class="card-title text-center">3 Products that never purchased</h5>
                 <hr>
-                <h4 class="card-text text-center">
+                <h4 class="card-text text-center lead">
                     <?php
                     $query = "SELECT p.name FROM products p
                     LEFT JOIN order_details o ON o.product_id = p.id
@@ -167,7 +167,7 @@
             <div class="card-body">
                 <h5 class="card-title text-center">Order Summary with highest purchased amount</h5>
                 <hr>
-                <h4 class="card-text text-center">
+                <h4 class="card-text text-center lead">
                     <?php
                     $query = "SELECT c.first_name, c.last_name, c.username, SUM(o.total_amount) as total_amount
                     FROM order_summary o 
