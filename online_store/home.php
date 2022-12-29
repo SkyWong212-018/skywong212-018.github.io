@@ -21,13 +21,107 @@
     <!-- navigation bar -->
     <?php
     include 'menu.php';
+    include 'config/database.php';
+
+    //Total customer
+    $query = "SELECT * FROM customers";
+    $stmt = $con->prepare($query);
+    $stmt->execute();
+    $total_customer = $stmt->rowCount();
+
+    //Total product
+    $query = "SELECT * FROM products";
+    $stmt = $con->prepare($query);
+    $stmt->execute();
+    $total_product = $stmt->rowCount();
+
+    //Total order
+    $query = "SELECT * FROM order_summary";
+    $stmt = $con->prepare($query);
+    $stmt->execute();
+    $total_order = $stmt->rowCount();
+
+    //Lastest
+    $query = "SELECT c.first_name, c.last_name, c.username, o.order_date, o.total_amount 
+    FROM order_summary o 
+    INNER JOIN customers c 
+    ON c.customer_id = o.customer_id 
+    ORDER BY order_id DESC";
+    $stmt = $con->prepare($query);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // values to fill up our form
+    $username = $row['username'];
+    $first_name = $row['first_name'];
+    $last_name = $row['last_name'];
+    $order_date = $row['order_date'];
+    $total_amount = $row['total_amount'];
     ?>
 
     <img src="img/nightcity 1.png" alt="nightcity" style="width:100%;">
     <div class="centered">
-        <h1>Sky E-Shop</h1>
+        <h1 class="display-1">Sky E-Shop</h1>
     </div>
 
+    <div class="card card border-dark rounded-0">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item text-white bg-dark rounded-0">
+                <h1 class="display-6">Total Number of Customers: <b><?php echo "$total_customer" ?></b></h1>
+                <a href="http://localhost/webdev/online_store/customer_read.php" class="btn btn-primary col-1 mb-3">Customer List</a>
+            </li>
+            <li class="list-group-item text-white bg-dark rounded-0">
+                <h1 class="display-6">Total Number of Products: <b><?php echo "$total_product" ?></b></h1>
+                <a href="http://localhost/webdev/online_store/product_read.php" class="btn btn-primary col-1 mb-3">Product List</a>
+            </li>
+            <li class="list-group-item text-white bg-dark rounded-0">
+                <h1 class="display-6">Total Number of Orders: <b><?php echo "$total_order" ?></b></h1>
+                <a href="http://localhost/webdev/online_store/order_read.php" class="btn btn-primary col-1 mb-3">Order List</a>
+            </li>
+            <li class="list-group-item text-white bg-dark rounded-0">
+                <h1 class="display-6">Latest Order ID & Summary</br></h1>
+                <hr>
+                <h3><?php echo "Username: $username" ?></h3>
+                <h3><?php echo "Customer Name: $first_name $last_name" ?></h3>
+                <h3><?php echo "Total Amount: RM $total_amount" ?></h3>
+                <h3><?php echo "Transaction Date: $order_date" ?></h3>
+                <a href="http://localhost/webdev/online_store/order_read.php" class="btn btn-primary col-1 mt-2 mb-4">Order List</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-group">
+        <div class="card text-white bg-dark rounded-0 border-dark">
+            <img class="card-img-top" src="img/nightcity 2.png" alt="Card image cap" height="630" width="auto">
+            <div class="card-body">
+                <h5 class="card-title text-center">Top 5 selling Products</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+            <div class="card-footer text-center">
+                <a href="http://localhost/webdev/online_store/product_read.php" class="btn btn-primary">Product List</a>
+            </div>
+        </div>
+        <div class="card text-white bg-dark rounded-0">
+            <img class="card-img-top" src="img/nightcity 3.png" alt="Card image cap" height="630" width="auto">
+            <div class="card-body">
+                <h5 class="card-title text-center">3 Products that never purchased</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+            </div>
+            <div class="card-footer text-center">
+                <a href="http://localhost/webdev/online_store/product_read.php" class="btn btn-primary">Product List</a>
+            </div>
+        </div>
+        <div class="card text-white bg-dark rounded-0">
+            <img class="card-img-top" src="img/nightcity 4.png" alt="Card image cap" height="630" width="auto">
+            <div class="card-body">
+                <h5 class="card-title text-center">The Order ID & Summary which has the highest purchased amount</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+            </div>
+            <div class="card-footer text-center">
+                <a href="http://localhost/webdev/online_store/order_read.php" class="btn btn-primary">Order List</a>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>

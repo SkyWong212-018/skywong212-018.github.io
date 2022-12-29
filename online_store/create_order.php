@@ -220,7 +220,7 @@ include 'session.php';
             </div>
             </table>
             <hr>
-            <input type="submit" class="btn btn-primary" /></th>
+            <input type='submit' value='Order' class=' btn btn-primary' />
             </form>
 
         </div> <!-- end .container -->

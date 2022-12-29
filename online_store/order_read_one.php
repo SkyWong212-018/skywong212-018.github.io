@@ -80,18 +80,18 @@
                             <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
                             <td>
                                 <div class='text-end'>
-                                    <?php echo number_format((float)$price, 2, '.', '') ?>
+                                    <?php echo $price ?>
                                 </div>
                             </td>
                             <td>
                                 <div class='text-end'>
-                                    <?php echo number_format((float)$promotion_price, 2, '.', '') ?>
+                                    <?php echo $promotion_price ?>
                                 </div>
                             </td>
                             <td><?php echo htmlspecialchars($quantity, ENT_QUOTES);  ?></td>
                             <td>
                                 <div class='text-end'>
-                                    <?php echo number_format((float)$price_each, 2, '.', '') ?>
+                                    <?php echo $price_each ?>
                                 </div>
                             </td>
                         </tr>
@@ -108,7 +108,7 @@
                         <td>
                             <div class='text-end'>
                                 <h3>
-                                    <?php echo number_format((float)$total_amount, 2, '.', '') ?>
+                                    <?php echo $total_amount ?>
                                 </h3>
                             </div>
                         </td>

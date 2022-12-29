@@ -84,8 +84,8 @@
                 echo "<td>{$id}</td>";
                 echo "<td>{$name}</td>";
                 echo "<td>{$description}</td>";
-                echo "<td class= \"text-end\" >" . number_format((float) $price, 2, '.', '') . "</td>";
-                echo "<td class= \"text-end\" >" . number_format((float) $promotion_price, 2, '.', '') . "</td>";
+                echo "<td class= \"text-end\" >" . $price . "</td>";
+                echo "<td class= \"text-end\" >" .  $promotion_price . "</td>";
 
                 echo "<td>";
                 // read one record
