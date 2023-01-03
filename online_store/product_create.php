@@ -101,7 +101,7 @@
                     $stmt->bindParam(':created', $created);
                     // Execute the query
                     if ($stmt->execute()) {
-                        header("Location: http://localhost/webdev/online_store/product_read.php?action=successful");
+                        header("Location: product_read.php?action=successful");
                     } else {
                         echo "<div class='alert alert-danger'>Unable to save record.</div>";
                     }

@@ -32,7 +32,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT customer_id ,username, password, first_name, last_name, gender, date_of_birth, registration FROM customers WHERE customer_id = ? LIMIT 0,1";
+            $query = "SELECT customer_id ,username, first_name, last_name, gender, date_of_birth, registration FROM customers WHERE customer_id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -48,7 +48,6 @@
             if ($row) {
                 $customer_id = $row['customer_id'];
                 $username = $row['username'];
-                $password = $row['password'];
                 $first_name = $row['first_name'];
                 $last_name = $row['last_name'];
                 $gender = $row['gender'];
@@ -70,10 +69,6 @@
             <tr>
                 <td>Username</td>
                 <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td><?php echo htmlspecialchars($password, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td>First Name</td>

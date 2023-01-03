@@ -52,19 +52,19 @@
             <!-- Total customer -->
             <li class="list-group-item text-white bg-dark rounded-0">
                 <h1 class="display-6">Total Number of Customers: <b><?php echo "$total_customer" ?></b></h1>
-                <a href="http://localhost/webdev/online_store/customer_read.php" class="btn btn-primary col-1 mb-3">Customer List</a>
+                <a href="customer_read.php" class="btn btn-primary col-1 mb-3">Customer List</a>
             </li>
 
             <!-- Total product -->
             <li class="list-group-item text-white bg-dark rounded-0">
                 <h1 class="display-6">Total Number of Products: <b><?php echo "$total_product" ?></b></h1>
-                <a href="http://localhost/webdev/online_store/product_read.php" class="btn btn-primary col-1 mb-3">Product List</a>
+                <a href="product_read.php" class="btn btn-primary col-1 mb-3">Product List</a>
             </li>
 
             <!-- Total order -->
             <li class="list-group-item text-white bg-dark rounded-0">
                 <h1 class="display-6">Total Number of Orders: <b><?php echo "$total_order" ?></b></h1>
-                <a href="http://localhost/webdev/online_store/order_read.php" class="btn btn-primary col-1 mb-3">Order List</a>
+                <a href="order_read.php" class="btn btn-primary col-1 mb-3">Order List</a>
             </li>
 
             <!-- Latest Order ID & Summary -->
@@ -92,7 +92,7 @@
                 <h3 class="lead"><?php echo "Customer Name: $first_name $last_name" ?></h3>
                 <h3 class="lead"><?php echo "Total Amount: RM $total_amount" ?></h3>
                 <h3 class="lead"><?php echo "Transaction Date: $order_date" ?></h3>
-                <a href="http://localhost/webdev/online_store/order_read.php" class="btn btn-primary col-1 mt-2 mb-4">Order List</a>
+                <a href="order_read.php" class="btn btn-primary col-1 mt-2 mb-4">Order List</a>
             </li>
         </ul>
     </div>
@@ -128,7 +128,7 @@
                     ?></p>
             </div>
             <div class="card-footer text-center">
-                <a href="http://localhost/webdev/online_store/product_read.php" class="btn btn-primary">Product List</a>
+                <a href="product_read.php" class="btn btn-primary">Product List</a>
             </div>
         </div>
 
@@ -157,7 +157,7 @@
                 </h4>
             </div>
             <div class="card-footer text-center">
-                <a href="http://localhost/webdev/online_store/product_read.php" class="btn btn-primary">Product List</a>
+                <a href="product_read.php" class="btn btn-primary">Product List</a>
             </div>
         </div>
 
@@ -195,7 +195,7 @@
                 </h4>
             </div>
             <div class="card-footer text-center">
-                <a href="http://localhost/webdev/online_store/order_read.php" class="btn btn-primary">Order List</a>
+                <a href="order_read.php" class="btn btn-primary">Order List</a>
             </div>
         </div>
     </div>

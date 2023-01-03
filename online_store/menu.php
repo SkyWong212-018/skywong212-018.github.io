@@ -12,19 +12,19 @@
             </nav>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/webdev/online_store/home.php">Home</a>
+                    <a class="nav-link" href="home.php">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/webdev/online_store/product_read.php">Product</a>
+                    <a class="nav-link" href="product_read.php">Product</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/webdev/online_store/customer_read.php">Customer</a>
+                    <a class="nav-link" href="customer_read.php">Customer</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/webdev/online_store/order_read.php">Order</a>
+                    <a class="nav-link" href="order_read.php">Order</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="http://localhost/webdev/online_store/contact_us.php">Contact Us</a>
+                    <a class="nav-link" aria-current="page" href="contact_us.php">Contact Us</a>
                 </li>
                 <td>
                     <a href='logout.php' class='btn btn-danger ms-3'>Log Out</a>

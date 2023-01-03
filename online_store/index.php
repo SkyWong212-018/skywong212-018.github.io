@@ -107,7 +107,7 @@ session_start();
                 if ($status == 'Active') {
                     //store username key in by username as a pass to let user to access the webpage
                     $_SESSION['username'] = $_POST['username'];
-                    header("Location: http://localhost/webdev/online_store/home.php?login=success");
+                    header("Location: home.php?login=success");
                 } else {
                     $statusErr = "Your Account is suspended *";
                 }

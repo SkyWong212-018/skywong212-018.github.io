@@ -29,6 +29,15 @@ include 'session.php';
         include 'config/database.php';
 
         if ($_POST) {
+            for ($x = 0; $x < count($product); $x++) {
+                if ($x == 0) {
+
+                    if ($value[$product[$x]] > 1) {
+                        $error_msg .= "<div class='alert alert-danger'>Cannot choose same product.</div>";
+                    }
+                }
+            }
+
             $product = $_POST["product"];
             $quantity = $_POST["quantity"];
             $order_details_id = $_POST["order_details_id"];
@@ -90,12 +99,11 @@ include 'session.php';
                     $stmt->bindParam(':quantity', $quantity[$x]);
                     $stmt->bindParam(':order_details_id', $order_details_id[$x]);
                     $stmt->bindParam(':price_each', $price_each);
-
-                    if ($stmt->execute()) {
-                        echo "<div class='alert alert-success'>Record was updated.</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Unable to update record.</div>";
-                    }
+                }
+                if ($stmt->execute()) {
+                    echo "<div class='alert alert-success'>Record was updated.</div>";
+                } else {
+                    echo "<div class='alert alert-danger'>Unable to update record.</div>";
                 }
             }
         }

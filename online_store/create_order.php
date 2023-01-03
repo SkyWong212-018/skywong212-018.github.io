@@ -55,7 +55,7 @@ include 'session.php';
                     for ($x = 0; $x < count($product); $x++) {
                         if ($x == 0) {
                             if ($product[$x] == "" or $quantity[$x] == "") {
-                                $error_msg .= "<div class='alert alert-danger'>Choose product $x with quantity.</div>";
+                                $error_msg .= "<div class='alert alert-danger'>Please at least choose a product.</div>";
                             }
                         } else {
                             if ($product[$x] != "") {
@@ -132,7 +132,7 @@ include 'session.php';
                                 $stmt->bindParam(':price_each', $price_each);
                                 $stmt->execute();
                             }
-                            header("Location: http://localhost/webdev/online_store/order_read.php?action=successful");
+                            header("Location: order_read.php?action=successful");
                         }
                     } else {
                         echo "<div class='alert alert-danger'>$error_msg</div>";
