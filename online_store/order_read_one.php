@@ -107,9 +107,7 @@
                         <td colspan="3"></td>
                         <td>
                             <div class='text-end'>
-                                <h3>
-                                    <?php echo $total_amount ?>
-                                </h3>
+                                <?php echo $total_amount ?>
                             </div>
                         </td>
                     </tr>

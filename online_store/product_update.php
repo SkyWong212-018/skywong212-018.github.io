@@ -92,6 +92,12 @@
                 $stmt->bindParam(':promotion_price', $promotion_price);
                 $stmt->bindParam(':manufacture_date', $manufacture_date);
                 $stmt->bindParam(':expired_date', $expired_date);
+
+                if (empty($promotion_price)) {
+                    $promotion_price = NULL;
+                } else if (($_POST["promotion_price"]) > ($_POST["price"])) {
+                    echo "<div class='alert alert-danger'>Promotion price should be cheaper than price.</div>";
+                }
                 // Execute the query
                 if ($stmt->execute()) {
                     echo "<div class='alert alert-success'>Record was updated.</div>";

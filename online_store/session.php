@@ -3,6 +3,6 @@
 //check is user have pass or not
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php?action=denied");
+    header("Location: index.php?action=denied");
 }
 ?>

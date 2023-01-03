@@ -68,7 +68,6 @@
             echo "<tr>";
             echo "<th>Customer ID</th>";
             echo "<th>Username</th>";
-            echo "<th>Password</th>";
             echo "<th>First name</th>";
             echo "<th>Last name</th>";
             echo "<th>Gender</th>";
@@ -86,7 +85,6 @@
                 echo "<tr>";
                 echo "<td>{$customer_id}</td>";
                 echo "<td>{$username}</td>";
-                echo "<td>{$password}</td>";
                 echo "<td>{$first_name}</td>";
                 echo "<td>{$last_name}</td>";
                 echo "<td>{$gender}</td>";
