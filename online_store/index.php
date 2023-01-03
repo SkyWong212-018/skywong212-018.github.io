@@ -78,7 +78,7 @@ session_start();
 <body class="text-center">
     <?php
     //Set variable for Error message
-    $usernameErr =  $passwordErr = $statusErr = $blankErr = "";
+    $usernameErr =  $passwordErr = $statusErr = $blankErr = $loginErr = "";
 
     if ($_POST) {
 
@@ -130,7 +130,7 @@ session_start();
                 <?php
                 if (isset($_GET["action"])) {
                     if ($_GET["action"] == "denied") {
-                        echo "<div class='alert alert-danger'>Please log in.</div><br>";
+                        $loginErr = "Please log in.";
                     }
                 }
                 ?>
@@ -142,6 +142,7 @@ session_start();
                 <span class="error"><?php echo $usernameErr; ?></span>
                 <span class="error"><?php echo $passwordErr; ?></span>
                 <span class="error"><?php echo $statusErr; ?></span>
+                <span class="error"><?php echo $loginErr; ?></span>
 
                 <div class="form-floating ">
                     <input type="text" class="form-control" name="username" value='<?php if (isset($_POST['username'])) {
